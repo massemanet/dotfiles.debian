@@ -83,9 +83,12 @@ get-erlang() {
     cd ~/git/otp/
     git pull --depth=2
     ./otp_build autoconf
-    ./configure --without-megaco --without-odbc --without-jinterface --without-javac --without-wx --enable-sctp=lib
-    make
-    sudo make install
+    ./configure --without-megaco --without-odbc --without-jinterface --without-javac --enable-sctp=lib
+    for i in wx debugger observer et
+    do touch lib/$i/SKIP
+    done
+
+    make install
 
     curl https://s3.amazonaws.com/rebar3/rebar3 > /tmp/rebar3
     sudo cp /tmp/rebar3 /usr/local/bin/rebar3
@@ -106,8 +109,8 @@ get-erlang() {
 
 get-java() {
     sudo apt-get update \
-	&& sudo apt-get install -y \
-		openjdk-8-jdk-headless openjdk-11-jdk-headless openssh-server
+        && sudo apt-get install -y \
+                openjdk-8-jdk-headless openjdk-11-jdk-headless openssh-server
     sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
 }
 
@@ -127,19 +130,19 @@ get-kubectl() {
 
 get-pgadmin() {
     sudo apt-get update \
-	&& sudo apt-get install -y pgadmin3
+        && sudo apt-get install -y pgadmin3
 }
 
 get-python() {
     sudo apt-get update \
-	&& sudo apt-get install -y python2 python3 \
-	&& sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 \
-	&& sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2
+        && sudo apt-get install -y python2 python3 \
+        && sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 \
+        && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2
 }
 
 get-wireshark() {
     sudo apt-get update \
-	&& sudo apt-get install -y tshark wireshark
+        && sudo apt-get install -y tshark wireshark
     sudo usermod -aG wireshark "$USER"
 }
 

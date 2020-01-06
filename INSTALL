@@ -3,11 +3,11 @@
 sudo apt-get update && \
 sudo apt-get upgrade -y && \
 sudo apt-get install -y \
-     apt-transport-https automake \
+     apt-transport-https \
      curl deborphan emacs-lucid \
      g++ git htop jq \
-     libncurses-dev libsctp-dev libssl-dev lksctp-tools \
-     make mosh ncdu netcat-traditional \
+     lksctp-tools \
+     mosh ncdu netcat-traditional \
      pass powertop python \
      shellcheck tmux && \
 sudo apt autoremove
@@ -15,14 +15,15 @@ sudo apt autoremove
 # get my stuff
 [ ! -e ~/.git ] &&
     cd /tmp && \
-	rm -rf dotfiles.kubuntu && \
-	git clone https://github.com/massemanet/dotfiles.kubuntu && \
-	cd dotfiles.kubuntu && \
-	git remote set-url origin git@github.com:massemanet/dotfiles.kubuntu && \
-	mv /tmp/dotfiles.kubuntu/.git ~
-(cd && git reset --hard)
+        rm -rf dotfiles.kubuntu && \
+        git clone https://github.com/massemanet/dotfiles.kubuntu && \
+        cd dotfiles.kubuntu && \
+        git remote set-url origin git@github.com:massemanet/dotfiles.kubuntu && \
+        mv /tmp/dotfiles.kubuntu/.git ~ && \
+        cd && \
+        git reset --hard
 
-~/bin/install.sh erlang
+# ~/bin/install.sh erlang
 
 # emacs (cask)
 [ ! -d ~/.cask ] && \
