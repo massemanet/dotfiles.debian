@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.IdeaIC2018.3/config/keymaps \
+    && rm -f ~/.IdeaIC2018.3/config/keymaps/MacBased.xml \
+    && ln -s ~/install/MacBased.xml ~/.IdeaIC2018.3/config/keymaps

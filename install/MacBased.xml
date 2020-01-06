@@ -1,0 +1,73 @@
+<keymap version="1" name="MacBased" parent="Mac OS X 10.5+">
+  <action id="$Copy">
+    <keyboard-shortcut first-keystroke="shift ctrl w" />
+    <keyboard-shortcut first-keystroke="alt c" />
+  </action>
+  <action id="$Cut">
+    <keyboard-shortcut first-keystroke="meta x" />
+    <keyboard-shortcut first-keystroke="shift delete" />
+    <keyboard-shortcut first-keystroke="ctrl w" />
+  </action>
+  <action id="$Paste">
+    <keyboard-shortcut first-keystroke="ctrl y" />
+    <keyboard-shortcut first-keystroke="alt v" />
+  </action>
+  <action id="$Undo">
+    <keyboard-shortcut first-keystroke="ctrl z" />
+    <keyboard-shortcut first-keystroke="alt z" />
+  </action>
+  <action id="Back">
+    <keyboard-shortcut first-keystroke="ctrl open_bracket" />
+    <mouse-shortcut keystroke="control button1" />
+  </action>
+  <action id="Debug" />
+  <action id="Editor Copy">
+    <keyboard-shortcut first-keystroke="shift ctrl w" />
+    <keyboard-shortcut first-keystroke="alt c" />
+  </action>
+  <action id="Editor Cut">
+    <keyboard-shortcut first-keystroke="ctrl w" />
+  </action>
+  <action id="Editor Paste">
+    <keyboard-shortcut first-keystroke="ctrl y" />
+    <keyboard-shortcut first-keystroke="alt v" />
+  </action>
+  <action id="Editor Undo">
+    <keyboard-shortcut first-keystroke="ctrl z" />
+    <keyboard-shortcut first-keystroke="alt z" />
+  </action>
+  <action id="EditorDelete">
+    <keyboard-shortcut first-keystroke="delete" />
+    <keyboard-shortcut first-keystroke="ctrl d" />
+  </action>
+  <action id="Find">
+    <keyboard-shortcut first-keystroke="ctrl s" />
+  </action>
+  <action id="FindInPath">
+    <keyboard-shortcut first-keystroke="ctrl alt s" />
+  </action>
+  <action id="FindNext">
+    <keyboard-shortcut first-keystroke="alt g" />
+  </action>
+  <action id="FindPrevious">
+    <keyboard-shortcut first-keystroke="shift alt g" />
+  </action>
+  <action id="FindUsages">
+    <mouse-shortcut keystroke="shift control button3" />
+  </action>
+  <action id="FindUsagesInFile">
+    <keyboard-shortcut first-keystroke="meta f7" />
+    <mouse-shortcut keystroke="control alt button3" />
+  </action>
+  <action id="GotoDeclaration">
+    <keyboard-shortcut first-keystroke="shift ctrl g" />
+    <mouse-shortcut keystroke="control button3" />
+  </action>
+  <action id="ReplaceInPath">
+    <keyboard-shortcut first-keystroke="shift alt r" />
+  </action>
+  <action id="RerunTests">
+    <keyboard-shortcut first-keystroke="ctrl meta r" />
+  </action>
+  <action id="UnselectPreviousOccurrence" />
+</keymap>

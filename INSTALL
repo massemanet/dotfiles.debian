@@ -1,0 +1,55 @@
+#!/bin/bash
+
+sudo apt-get update && \
+sudo apt-get upgrade -y && \
+sudo apt-get install -y \
+     apt-transport-https automake \
+     curl deborphan emacs-lucid \
+     g++ git htop jq \
+     libncurses-dev libsctp-dev libssl-dev lksctp-tools \
+     make mosh ncdu netcat-traditional \
+     pass powertop python \
+     shellcheck tmux && \
+sudo apt autoremove
+
+# get my stuff
+[ ! -e ~/.git ] &&
+    cd /tmp && \
+	rm -rf dotfiles.kubuntu && \
+	git clone https://github.com/massemanet/dotfiles.kubuntu && \
+	cd dotfiles.kubuntu && \
+	git remote set-url origin git@github.com:massemanet/dotfiles.kubuntu && \
+	mv /tmp/dotfiles.kubuntu/.git ~
+(cd && git reset --hard)
+
+~/bin/install.sh erlang
+
+# emacs (cask)
+[ ! -d ~/.cask ] && \
+    curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python
+(cd ~/.emacs.d && ~/.cask/bin/cask install)
+
+# edit /etc/default/nodm to have these lines
+# NODM_ENABLED=true
+# NODM_USER=masse
+# NODM_XSESSION=/home/masse/.xsession
+
+# set up lid event
+# /etc/acpi/events/lidevent
+# event=button/lid
+# action=/etc/acpi/lidevent.sh "%e"
+
+# /etc/acpi/lidevent.sh
+# #!/bin/bash
+# for f in /home/*/bin/lidevent.sh
+# do if [ -x "$f" ]
+#    then su $(stat -c "%U" $f) -c "$f $1"
+#    fi
+# done
+
+# let systemd resolve
+# /etc/resolv.conf -> /run/systemd/resolve/resolv.conf
+# tell systemd resolver to use google
+# /etc/systemd/resolved.conf
+# [Resolve]
+# DNS=8.8.8.8
