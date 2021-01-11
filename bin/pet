@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+init() {
+    [ ! -d "$DEST" ] && (cd "$(dirname "$DEST")" && git init "$(basename "$DEST")")
+
+    if [ ! -d "$DEST/ssh" ]; then
+        [ -z "$REMOTE" ] && read -r -p "remote ssh host: " REMOTE
+        [ -z "$SHORT_WORK" ] && read -r -p "work tag (like foo): " SHORT_WORK
+        mkdir -p "$DEST/ssh"
+        scp "$REMOTE:$HOME/.ssh/id_rsa"                 "$DEST/ssh/id_rsa_$USER"
+        scp "$REMOTE:$HOME/.ssh/id_rsa.pub"             "$DEST/ssh/id_rsa_$USER.pub"
+        scp "$REMOTE:$HOME/.ssh/id_rsa_$SHORT_WORK"     "$DEST/ssh"
+        scp "$REMOTE:$HOME/.ssh/id_rsa_$SHORT_WORK.pub" "$DEST/ssh"
+    fi
+
+    if [ ! -d "$HOME/.password-store/$USER" ]; then
+        mkdir -p "$HOME/.password-store"
+        pass init "$USER"
+        pass init -p "$USER" "$USER"
+    fi
+
+    [ -z "$SHORT_WORK" ] && read -r -p "work tag (like foo): " SHORT_WORK
+    if [ ! -d "$HOME/.password-store/$SHORT_WORK" ]; then
+        read -r -p "work secrets @github (like user/repo): " SECRETS
+        git clone "git@github.com:$SECRETS" "$HOME/.password-store/$SHORT_WORK"
+    fi
+
+    if [ ! -d "$HOME/.aws" ]; then
+        [ -z "$REMOTE" ] && read -r -p "remote ssh host: " REMOTE
+        [ -z "$SHORT_WORK" ] && read -r -p "work tag (like foo): " SHORT_WORK
+        mkdir -p "$HOME/.aws"
+        ssh "$REMOTE" "cat *.csv"
+        aws-vault add default
+        cat > "$HOME/.aws/config" <<HERE
+[default]
+region = eu-west-1
+mfa_serial = arn:aws:iam::664692529590:mfa/$USER
+[profile infra]
+source_profile = default
+mfa_serial = arn:aws:iam::664692529590:mfa/$USER
+[profile dev]
+source_profile = default
+role_arn = arn:aws:iam::140545465132:role/developer-$SHORT_WORK
+mfa_serial = arn:aws:iam::664692529590:mfa/$USER
+[profile prod]
+source_profile = default
+role_arn = arn:aws:iam::250641482516:role/developer-$SHORT_WORK
+mfa_serial = arn:aws:iam::664692529590:mfa/$USER
+HERE
+    fi
+
+    if [ ! -d "$HOME/.kube" ]; then
+        [ -z "$LONG_WORK" ] && read -r -p "work domain (like foo.com): " LONG_WORK
+        echo "https://login.dub.prod.$LONG_WORK/"
+        echo "https://login.dub.dev.$LONG_WORK/"
+    fi
+
+    if ! grep -q "reg.prod" "$HOME/.docker/config.json" ; then
+        [ -z "$SHORT_WORK" ] && read -r -p "work tag (like foo): " SHORT_WORK
+        [ -z "$LONG_WORK" ] && read -r -p "work domain (like foo.com): " LONG_WORK
+        pass show "$SHORT_WORK/kubernetes/dub.prod.$LONG_WORK/registry/users/infra" | \
+            docker login -u infra --password-stdin "https://reg.prod.$LONG_WORK"
+    fi
+
+}
+
+pack() {
+    [ -z "$SHORT_WORK" ] && read -r -p "work tag (like foo): " SHORT_WORK
+    rm -f /tmp/pet.tgz
+    tar -czf /tmp/pet.tgz \
+        -C "$HOME" \
+        --exclude ".password-store/$SHORT_WORK" \
+        --exclude ".config/chromium" \
+        --exclude ".config/BraveSoftware" \
+        --exclude ".config/gtk-3.0/settings.ini" \
+        --exclude ".config/sway/config" \
+        --exclude ".config/spotify/User Data" \
+        --exclude ".kube/cache" \
+        .aws/ .config/ .docker/ .gnupg/ .kube/ .local/ .password-store/ pet/ssh/
+    gpg -c /tmp/pet.tgz
+    mv /tmp/pet.tgz.gpg "$DEST"
+}
+
+unpack() {
+    local PET="${2:-/tmp/pet.tgz.gpg}"
+    [ ! -f "$PET" ] && echo "no pet file." && exit 1
+    gpg -d "$PET" > /tmp/$$.tgz
+    tar -C "$HOME" -xzf /tmp/$$.tgz
+}
+
+DEST="$HOME/pet"
+case "$1" in
+    init)   init;;
+    unpack) unpack "$2";;
+    pack)   pack;;
+    *)      echo "unrecognized command: $1";;
+esac

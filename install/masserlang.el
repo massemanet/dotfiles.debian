@@ -3,14 +3,8 @@
 ;;; masse's erlang setup
 ;;; Code:
 
-(add-to-list 'load-path "/home/masse/git/distel/elisp")
-(add-to-list 'load-path "/opt/wrk/distel/elisp")
-(add-to-list 'load-path "/opt/wrk/distel-completion")
-
 (require 'align)
 (require 'erlang-start)
-(require 'company)
-(require 'company-distel)
 
 (defun my-shell-mode ()
   "My erlang shell mode bindings."
@@ -20,8 +14,6 @@
   (local-set-key (kbd "C-p") 'comint-previous-input))
 (add-hook 'erlang-shell-mode-hook 'my-shell-mode)
 
-(distel-setup)
-(add-to-list 'company-backends 'company-distel-modules)
 (setq company-require-match nil)
 (setq company-lighter nil)
 
@@ -33,13 +25,24 @@
 (defun my-erlang-mode-hook ()
   "We want company mode and flycheck."
   (setq
-   flycheck-erlang-include-path
-   (file-expand-wildcards (concat (flycheck-rebar3-project-root)
-                                  "_build/*/lib/*/include"))
-   flycheck-erlang-library-path
-   (file-expand-wildcards (concat (flycheck-rebar3-project-root)
-                                  "_build/*/lib/*/ebin")))
-  (company-mode t))
+   flycheck-erlang-include-path (append
+                                 (file-expand-wildcards
+                                  (concat
+                                   (flycheck-rebar3-project-root)
+                                   "_build/*/lib/*/include"))
+                                 (file-expand-wildcards
+                                  (concat
+                                   (flycheck-rebar3-project-root)
+                                   "_checkouts/*/include")))
+   flycheck-erlang-library-path (append
+                                 (file-expand-wildcards
+                                  (concat
+                                   (flycheck-rebar3-project-root)
+                                   "_build/*/lib/*/ebin"))
+                                 (file-expand-wildcards
+                                  (concat
+                                   (flycheck-rebar3-project-root)
+                                   "_checkouts/*/ebin")))))
 
 (add-hook 'erlang-mode-hook 'my-erlang-mode-hook)
 

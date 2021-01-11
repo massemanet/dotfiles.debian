@@ -1,0 +1,14 @@
+#!/bin/bash
+
+REGISTRY=https://registry.hub.docker.com
+USER=massemanet
+
+if [ -z "$1" ]; then
+    curl -sL "$REGISTRY"/v2/repositories/"$USER" | \
+        jq -r '.results[].name'
+else
+    IMAGE="$1"
+    TAG=$(curl -sL "$REGISTRY"/v2/repositories/"$USER"/"$IMAGE"/tags | \
+              jq -r '.results[].name' | sort -V | tail -n1)
+    docker pull "$USER"/"$IMAGE":"$TAG"
+fi

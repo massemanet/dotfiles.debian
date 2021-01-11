@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+SSHDIR=~/pet/ssh
+
+set_id() {
+    local ID="$SSHDIR/$1"
+    if [ -f "$ID" ]; then
+        ssh-add -D
+        ssh-add "$ID"
+    else
+        echo "no such id: $1"
+    fi
+}
+get_id() {
+    for i in  $(cd "$SSHDIR" || exit; echo id_rsa_*)
+    do echo "$i" | cut -f1 -d"." | cut -f3 -d"_"
+    done | sort -u
+}
+show_id() {
+    case "$(ssh-add -l)" in
+         "The agent has no identities.") echo "";;
+         *) basename "$(ssh-add -l | cut -f3 -d" ")" | cut -f3 -d"_"
+    esac
+}
+
+case "$1" in
+    "list")
+        get_id
+        ;;
+    "")
+        show_id
+        ;;
+    masse)
+        set_id "id_rsa_masse"
+        git config --local user.name "mats cronqvist"
+        git config --local user.email "masse@cronqvi.st"
+        ;;
+    wg2)
+        set_id "id_rsa_wg2"
+        git config --local user.email "masse@wgtwo.com"
+        git config --local github.user "masse-wg2"
+        ;;
+esac

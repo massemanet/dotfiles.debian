@@ -1,3 +1,3 @@
-# dotfiles.debian
+# dotfiles.ubuntu
 
-debian dotfiles! For running in Windows10 (WSL).
+ubuntu dotfiles. Vintage 2019.
