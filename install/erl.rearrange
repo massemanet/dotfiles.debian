@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-mkdir -p ~/.emacs.d/masserlang \
-    && rm -f ~/.emacs.d/masserlang/masserlang.el \
-    && ln -s ~/install/masserlang.el ~/.emacs.d/masserlang
-rm -f ~/.erlang \
-    && ln -s ~/install/erlang ~/.erlang
-rm -f ~/user_default.erl \
-    && ln -s ~/install/user_default.erl ~

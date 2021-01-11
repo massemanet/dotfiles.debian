@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+_usage() {
+    cat <<HERE
+stocker [CMD]
+
+stocker is a frontend to docker.
+CMD;
+  run     - start an interactive container with bash
+  start   - start a container in the background (host network)
+  repl    - attach to the erlang shell of a running starlet container
+  bash    - attach to bash in a running starlet container
+  cleanup - delete all dangling docker things
+  kill    - kill a container
+  killall - kill all containers and clean up
+  ps      - show all running containers
+HERE
+    exit 0
+}
+
+_err() {
+    echo "${1:-"unknown error"}"
+    exit 3
+}
+
+_cleanup(){
+    local c i
+    for c in $(docker ps -aq); do
+        docker rm "$c" 2>/dev/null
+    done
+    for i in $(docker images -f "dangling=true" -q); do
+        docker rmi "$i"
+    done
+    docker network prune -f
+    docker volume prune -f
+    docker images | sort -V
+}
+
+_killall(){
+    for c in $(docker ps -aq); do
+        docker rm -f "$c" 2>/dev/null
+    done
+}
+
+_images() {
+    docker images | awk '/REPO/{next}{print $1":"$2}'
+}
+
+_containers(){
+    docker ps | awk '/CONT/{next}{print $1}'
+}
+
+_ps() {
+    docker ps -a
+}
+
+_select_image() {
+    _images | sort | fzf
+}
+
+_select_container() {
+    _containers | sort | fzf
+}
+
+_mounts() {
+    local mounts=""
+    for m in "$@"
+    do if [ -d "$m" ]
+       then mounts+=" -v $m:/$(basename "$m")"
+       else _err "no such directory: $m"
+       fi
+    done
+    echo "$mounts"
+}
+
+_bash() {
+    docker run -it --detach-keys ctrl-q,ctrl-q --entrypoint bash \
+           $(_mounts "$@") "$(_select_image)"
+}
+
+case "$1" in
+    "run")
+        _bash "${@:2}"
+        ;;
+    "start")
+        docker run -d -e "STP_REMOTE_ADDRESS=localhost" "$(_select_image)"
+        ;;
+    "repl")
+        docker exec -it --detach-keys ctrl-q,ctrl-q "$(_select_container)" /starlet/bin/entrypoint.sh remote_console
+        ;;
+    "bash")
+        docker exec -it --detach-keys ctrl-q,ctrl-q "$(_select_container)" bash
+        ;;
+    "cleanup")
+        _cleanup
+        ;;
+    "kill")
+        docker kill "$(_select_container)"
+        _cleanup
+        ;;
+    "killall")
+        _killall
+        _cleanup
+        ;;
+    "ps")
+        _ps
+        ;;
+    "")
+        _usage
+        ;;
+esac
