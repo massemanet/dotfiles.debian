@@ -94,7 +94,8 @@ get-chromium() {
     (cd ~/.local/chromium-web-store && unzip chromium-web-store.crx) || true
     ln -s ~/.local/chromium-web-store /tmp
     echo "Add the extension in chromium; 'More Tools => Extensions => load unpacked' = /tmp/chromium-web-store"
-    echo "Also visit chrome://flags/#extension-mime-request-handling and set to 'Always prompt...'"
+    echo "Also visit; chrome://flags/#extension-mime-request-handling and set to 'Always prompt...'"
+    echo "This is also good; chrome://extensions/shortcuts"
 }
 
 get-docker() {

@@ -18,7 +18,7 @@ facetimehd() {
 
     echo get driver code
     cd /usr/src
-    sudo git clone https://github.com/patjak/bcwc_pcie
+    [ -d bcwc_pcie ] || sudo git clone https://github.com/patjak/bcwc_pcie
 
     echo check dkms.conf, rename driver dir
     MOD="$(grep PACKAGE_NAME bcwc_pcie/dkms.conf | cut -f2 -d"=")"
@@ -40,14 +40,14 @@ facetimehd() {
     sudo cp /var/lib/dkms/"$MOD"/"$VSN"/deb/"$MOD"-dkms_"$VSN"_all.deb /root
     echo Get rid of the local build files:
     sudo rm -r /var/lib/dkms/"$MOD"
-    echoInstall the new deb package:
+    echo Install the new deb package:
     sudo dpkg -i /root/"$MOD"-dkms_"$VSN"_all.deb
     echo load the module
     sudo modprobe "$MOD"
 }
 
 wl() {
-    lsmod | grep "wl " && exit 0
+    lsmod | grep "wl " && return
 
     sudo apt-get install -y --auto-remove \
          broadcom-sta-dkms
