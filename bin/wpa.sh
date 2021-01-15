@@ -6,6 +6,7 @@ _setup() {
     if [ ! -f "$CFG" ]
     then cat | sudo tee "$CFG" <<HERE
 ctrl_interface=/run/wpa_supplicant
+ctrl_interface_group=sudo
 update_config=1
 HERE
     fi

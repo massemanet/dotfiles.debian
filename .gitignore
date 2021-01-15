@@ -67,6 +67,7 @@ foo*
 /.uplink/
 /.wg2/
 /.wget*
+/.wpa_cli_history
 /.xinputrc
 /.xpra/
 /.xsession-errors
