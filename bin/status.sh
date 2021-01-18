@@ -30,6 +30,8 @@ _bat() {
     if [ "${1:-""}" = "color" ]; then
         if [ "$STATUS" = "Discharging" ] && ((CAPACITY < 5))
         then echo "#ee1111"
+        elif [ "$STATUS" = "Discharging" ] && ((CAPACITY < 15))
+        then  echo "#eeee11"
         else echo "11ee11"
         fi
     else

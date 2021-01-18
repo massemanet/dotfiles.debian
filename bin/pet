@@ -15,7 +15,6 @@ init() {
 
     if [ ! -d "$HOME/.password-store/$USER" ]; then
         mkdir -p "$HOME/.password-store"
-        pass init "$USER"
         pass init -p "$USER" "$USER"
     fi
 
