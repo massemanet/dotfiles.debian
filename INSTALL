@@ -28,7 +28,7 @@ sudo apt-get install --autoremove -y \
      ncdu netcat-traditional \
      pass pavucontrol powertop python-is-python3 pulseaudio-module-bluetooth \
      ripgrep \
-     shellcheck shellinabox
+     shellcheck shellinabox strace
 command -v snap && sudo apt purge --autoremove snapd
 
 # get my stuff

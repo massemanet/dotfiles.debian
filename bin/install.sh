@@ -196,6 +196,19 @@ get-erlang() {
     make
 }
 
+get-fluxctl() {
+    local r
+    local VSN="${1:-}"
+    local DLPAGE="https://github.com/fluxcd/flux/releases"
+    local RE="download/[0-9\\.]+/fluxctl_linux_amd64"
+
+    r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
+    [ -z "$r" ] && err "no file at $DLPAGE."
+    echo "found file: $r"
+    curl -sL "$DLPAGE/$r" -o /tmp/fluxctl
+    sudo install /tmp/fluxctl /usr/bin
+}
+
 get-go() {
     local DL="golang.org/dl"
     local RE="go[0-9]+\.[0-9]+\.[0-9]+\.linux-amd64\.tar\.gz"

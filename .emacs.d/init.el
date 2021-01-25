@@ -195,7 +195,7 @@ Repeated invocations toggle between the two most recently open buffers."
    '("4cf9ed30ea575fb0ca3cff6ef34b1b87192965245776afa9e9e20c17d115f3fb" "a06658a45f043cd95549d6845454ad1c1d6e24a99271676ae56157619952394a" "c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" default))
  '(flycheck-disabled-checkers '(erlang-rebar3))
  '(package-selected-packages
-   '(cask shut-up transient flycheck magit markdown-mode rust-mode dumb-jump yaml-mode solarized-theme smart-mode-line projectile pallet nyan-mode kubernetes highlight-parentheses gruvbox-theme go-mode flymake-rust flymake-jslint flycheck-rust exec-path-from-shell erlang dockerfile-mode cargo bazel-mode))
+   '(cask shut-up transient flycheck magit markdown-mode rust-mode yaml-mode solarized-theme smart-mode-line projectile pallet nyan-mode kubernetes highlight-parentheses gruvbox-theme go-mode flymake-rust flymake-jslint flycheck-rust exec-path-from-shell erlang dockerfile-mode cargo bazel-mode))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#1d2021"))
  '(term-default-bg-color nil)
  '(term-default-fg-color nil)

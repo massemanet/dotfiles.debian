@@ -5,7 +5,6 @@
 (depends-on "cargo")
 (depends-on "cask")
 (depends-on "dockerfile-mode")
-(depends-on "dumb-jump")
 (depends-on "epl")
 (depends-on "erlang")
 (depends-on "exec-path-from-shell")
