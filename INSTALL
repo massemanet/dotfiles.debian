@@ -20,7 +20,7 @@ sudo apt-get install --autoremove -y \
      curl \
      deborphan \
      feh firmware-linux \
-     g++ git gopass \
+     g++ gdb git \
      jq \
      kitty \
      lksctp-tools \
