@@ -11,14 +11,13 @@ update_config=1
 HERE
     fi
 
-    read -r -p "password for $SSID: " -s KEY
-    CONF=$(wpa_passphrase "$SSID" "$KEY" | grep -v "\#")
-
-    echo "$CONF"
-    if ! grep -q "$CONF" "$CFG"
-    then read -r -p "looks good? (y/n):" KEEP
+    if ! grep -q 'ssid=:"'"$SSID"'"' "$CFG"
+    then read -r -p "password for $SSID: " -s KEY
+         CONF=$(wpa_passphrase "$SSID" "$KEY" | grep -v "\#")
+         echo "$CONF"
+         read -r -p "looks good? (y/n):" KEEP
          [ "$KEEP" = "y" ] || exit 0
-         echo "$CONF" | sudo tee "$CFG"
+         echo "$CONF" | sudo tee -a "$CFG"
     fi
     _connect
 }
@@ -29,13 +28,20 @@ _connect() {
 }
 
 _reset() {
+    #sudo dhclient -r # release the ip?
     sudo killall -HUP wpa_supplicant
+}
+
+_open() {
+    ## – Connecting to open network
+    sudo iw dev "$INTERFACE" connect "$SSID"
 }
 
 INTERFACE="$(iw dev | grep Interface  | cut -f2 -d" ")"
 CFG="/etc/wpa_supplicant/wpa_supplicant-$INTERFACE.conf"
 
 case $1 in
+    open) _open "$1";;
     reset) _reset;;
     "") _connect;;
     *) _setup "$1";;
