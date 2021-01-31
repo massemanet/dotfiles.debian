@@ -16,7 +16,7 @@ grep -qE ' main$' "$S" && sudo sed -i 's/ main$/ main contrib non-free/g' "$S"
 sudo apt-get update && \
 sudo apt-get upgrade -y && \
 sudo apt-get install --autoremove -y \
-     automake \
+     aspell-en aspell-sv automake \
      curl \
      deborphan \
      feh firmware-linux \

@@ -82,6 +82,8 @@ case "$1" in
     "run")
         _bash "${@:2}"
         ;;
+    "images")
+        _images;;
     "start")
         docker run -d -e "STP_REMOTE_ADDRESS=localhost" "$(_select_image)"
         ;;

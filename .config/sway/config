@@ -112,11 +112,11 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     status_command $HOME/bin/status.sh
-    separator_symbol :
+    separator_symbol #
     colors {
         statusline #ffffff
         background #323232
-        separator #ee1111
+        separator #117777
         inactive_workspace #32323200 #32323200 #5c5c5c
     }
 }
