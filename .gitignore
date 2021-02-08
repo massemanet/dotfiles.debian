@@ -4,7 +4,6 @@
 \#*
 foo*
 *.beam
-/specs
 
 /*.png
 /.ICEauthority
@@ -80,7 +79,6 @@ foo*
 /Desktop/
 /Downloads/
 /Pictures/
-/coverage/
 /pgadmin.log
 /snap/
 /stale_outputs_checked
@@ -88,4 +86,4 @@ foo*
 
 /git/
 /pet/
-/wg2/
+/tmp/
