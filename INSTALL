@@ -17,18 +17,21 @@ sudo apt-get update && \
 sudo apt-get upgrade -y && \
 sudo apt-get install --autoremove -y \
      aspell-en aspell-sv automake \
+     bind9-dnsutils \
      curl \
      deborphan \
      feh firmware-linux \
      g++ gdb git \
+     imagemagick iputils-ping \
      jq \
      kitty \
      lksctp-tools \
      make mosh \
      ncdu netcat-traditional \
-     pass pavucontrol powertop python-is-python3 pulseaudio-module-bluetooth \
+     pandoc pass pavucontrol powertop python-is-python3 pulseaudio-module-bluetooth \
      ripgrep \
-     shellcheck shellinabox strace
+     shellcheck shellinabox socat strace \
+     telnet traceroute
 command -v snap && sudo apt purge --autoremove snapd
 
 # get my stuff
