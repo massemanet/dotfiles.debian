@@ -44,6 +44,9 @@ command -v snap && sudo apt purge --autoremove snapd
         mv /tmp/dotfiles.ubuntu/.git ~ && \
         (cd && git reset --hard)
 
+# disable power off key
+sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/logind.conf
+
 # get the pet files
 [ -d ~/pet ] || ~/bin/pet unpack
 
