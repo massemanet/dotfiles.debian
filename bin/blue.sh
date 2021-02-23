@@ -37,7 +37,9 @@ _pair() {
     D=$(_scan "$1")
     if [ -z "$D" ]
     then echo "not found"
-    else bluetoothctl pair "$D"
+    else bluetoothctl pair "$D" \
+            && bluetoothctl trust "$D" \
+            && bluetoothctl connect "$D"
     fi
 }
 
@@ -50,6 +52,7 @@ _connected() {
 }
 
 _scan() {
+    bluetoothctl power on
     bluetoothctl --timeout 7 scan on >/dev/null
     if [ -z "$1" ]; then
         _info
