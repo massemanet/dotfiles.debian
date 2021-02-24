@@ -32,6 +32,7 @@ foo*
 /.gtkrc-*
 /.hydrogen/
 /.intellij/
+/.ispell_*
 /.java/
 /.kde/
 /.konan/

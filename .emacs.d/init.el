@@ -162,7 +162,6 @@ Repeated invocations toggle between the two most recently open buffers."
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (defun my-text-mode-hook ()
   (setq fill-column 79)
-  (setq ispell-program-name "aspell")
   (if (locate-library "highlight-parentheses")
       (highlight-parentheses-mode -1))
   (if (locate-library "flyspell")
