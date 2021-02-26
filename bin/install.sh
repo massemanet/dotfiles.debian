@@ -143,7 +143,7 @@ get-docker-compose() {
 # emacs for wayland
 get-emacs() {
     cd /tmp
-    [ -d emacs ] || git clone --depth=2 --single-branch https://github.com/masm11/emacs
+    [ -d emacs ] || git clone --branch feature/pgtk --single-branch git://git.sv.gnu.org/emacs.git
     cd emacs/
     ./autogen.sh
     sudo apt update &&
