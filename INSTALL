@@ -28,7 +28,7 @@ sudo apt-get install --autoremove -y \
      lksctp-tools \
      make mosh \
      ncdu netcat-traditional \
-     pandoc pass pavucontrol powertop python-is-python3 pulseaudio-module-bluetooth \
+     pamix pandoc pass powertop python-is-python3 pulseaudio-module-bluetooth \
      ripgrep \
      shellcheck shellinabox socat strace \
      telnet traceroute
@@ -36,13 +36,14 @@ command -v snap && sudo apt purge --autoremove snapd
 
 # get my stuff
 [ ! -e ~/.git ] &&
-    cd /tmp && \
-        rm -rf dotfiles.ubuntu && \
-        git clone https://github.com/massemanet/dotfiles.ubuntu && \
-        cd dotfiles.ubuntu && \
-        git remote set-url origin git@github.com:massemanet/dotfiles.ubuntu && \
-        mv /tmp/dotfiles.ubuntu/.git ~ && \
-        (cd && git reset --hard)
+    (cd /tmp &&
+         rm -rf dotfiles &&
+         git clone https://github.com/massemanet/dotfiles.debian dotfiles &&
+         cd dotfiles &&
+         git remote set-url origin git@github.com:massemanet/dotfiles.debian &&
+         mv .git ~ &&
+         cd ~ &&
+         git reset --hard)
 
 # disable power off key
 sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/logind.conf
