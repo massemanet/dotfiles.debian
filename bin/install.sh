@@ -70,6 +70,7 @@ get-brave(){
     sudo apt update &&
         sudo apt install -y --auto-remove \
              brave-browser
+    echo "This is also good; brave://extensions/shortcuts"
 }
 
 get-chromium() {
