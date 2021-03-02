@@ -52,7 +52,7 @@ _connected() {
 }
 
 _scan() {
-    bluetoothctl power on
+    bluetoothctl power on > /dev/null
     bluetoothctl --timeout 7 scan on >/dev/null
     if [ -z "$1" ]; then
         _info
