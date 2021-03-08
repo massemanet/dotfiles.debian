@@ -49,9 +49,10 @@
 (defun my-dark ()
   "Set dark theme."
   (interactive)
-  (load-theme 'gruvbox-dark-hard t))
+  (load-theme 'wheatgrass t)
+  (load-theme 'smart-mode-line-dark))
 
-(defun my-lite ()
+(defun my-light ()
   "Set light theme."
   (interactive)
   (load-theme 'gruvbox-light-hard t))
