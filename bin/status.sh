@@ -63,6 +63,14 @@ _cpu(){
     echo "$(( (100*(CPUS*(UP0-UP1)-(IDLE0-IDLE1)))/(UP0-UP1) ))%"
 }
 
+_layout() {
+    swaymsg -rt get_inputs |\
+        jq -r '.[]|select(.identifier | match("keyboard")).xkb_active_layout_name' |\
+        head -n1 |\
+        cut -c-2
+}
+
+
 _date() {
     date +'%Y-%m-%d'
 }
@@ -79,6 +87,7 @@ _bar() {
     printf ',{"full_text": "%s", "color":"'"$(_bat color)"'"}' "$(_bat)"
     printf ',{"full_text": "%s"}' "$(_date)"
     printf ',{"full_text": "%s"}' "$(_time)"
+    printf ',{"full_text": "%s"}' "$(_layout)"
     echo "],"
 }
 
