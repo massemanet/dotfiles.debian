@@ -13,25 +13,26 @@ S=/etc/apt/sources.list
 grep -qE ' main$' "$S" && sudo sed -i 's/ main$/ main contrib non-free/g' "$S"
 
 # install some sane stuff
-sudo apt-get update && \
-sudo apt-get upgrade -y && \
-sudo apt-get install --autoremove -y \
-     aspell-en aspell-sv automake \
-     bind9-dnsutils \
-     curl \
-     deborphan \
-     feh firmware-linux \
-     g++ gdb git \
-     imagemagick iputils-ping \
-     jq \
-     kitty \
-     lksctp-tools \
-     make mosh \
-     ncdu netcat-traditional \
-     pamix pandoc pass powertop python-is-python3 pulseaudio-module-bluetooth \
-     ripgrep \
-     shellcheck shellinabox socat strace \
-     telnet traceroute
+sudo apt-get update &&
+    sudo apt-get upgrade -y &&
+    sudo apt-get install --autoremove -y \
+         aspell-en aspell-sv automake \
+         bind9-dnsutils \
+         cups curl \
+         deborphan \
+         feh firmware-linux \
+         g++ gdb git \
+         imagemagick iputils-ping \
+         jq \
+         kitty \
+         linux-cpupower lksctp-tools \
+         make mosh \
+         ncdu netcat-traditional \
+         pamix pandoc pass powertop python-is-python3 pulseaudio-module-bluetooth \
+         ripgrep \
+         shellcheck shellinabox socat strace \
+         telnet traceroute \
+         whois
 command -v snap && sudo apt purge --autoremove snapd
 
 # get my stuff

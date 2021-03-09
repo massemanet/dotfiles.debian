@@ -80,7 +80,7 @@ _time() {
 }
 
 _bar() {
-    printf '[{"full_text": "%s"}' "$(_spotify)"
+    printf '[{"full_text": "%s", "color":"#78b6e2"}' "$(_spotify)"
     printf ',{"full_text": "%s"}' "$(_net)"
     printf ',{"full_text": "%s"}' "$(_ping)"
     printf ',{"full_text": "%s", "color":"'"$(_cpu_color "$@")"'"}' "$(_cpu "$@")"
@@ -101,3 +101,9 @@ do mapfile -d" " U1 < <(tr -d "." < /proc/uptime)
    _bar "$CPUS" "${U1[@]}" "${U0[@]}"
    U0=("${U1[@]}")
 done
+
+# while sleep 1
+# do T=$(cat /sys/bus/acpi/drivers/thermal/LNXTHERM:00/thermal_zone/temp)
+#    P=$(cat /sys/class/power_supply/BAT0/power_now)
+#    echo "$((T/1000)):$((P/1000000))" | tee ~/power.log
+# done
