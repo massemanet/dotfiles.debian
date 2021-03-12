@@ -70,6 +70,14 @@ _layout() {
         cut -c-2
 }
 
+_power() {
+    local F V T P
+    F=$(cpupower frequency-info -f | grep -Eo "[0-9][0-9]+")
+    V=$(cat /sys/class/power_supply/BAT0/voltage_now)
+    T=$(cat /sys/bus/acpi/drivers/thermal/LNXTHERM\:00/thermal_zone/temp)
+    P=$(cat /sys/class/power_supply/BAT0/power_now)
+    echo "$((T/1000))C:$((P/1000000))W:$((V/1000))mV:$((F/1000))MHz"
+}
 
 _date() {
     date +'%Y-%m-%d'
@@ -85,6 +93,7 @@ _bar() {
     printf ',{"full_text": "%s"}' "$(_ping)"
     printf ',{"full_text": "%s", "color":"'"$(_cpu_color "$@")"'"}' "$(_cpu "$@")"
     printf ',{"full_text": "%s", "color":"'"$(_bat color)"'"}' "$(_bat)"
+    printf ',{"full_text": "%s", "color":"#ff6db4"}' "$(_power)"
     printf ',{"full_text": "%s"}' "$(_date)"
     printf ',{"full_text": "%s"}' "$(_time)"
     printf ',{"full_text": "%s"}' "$(_layout)"
@@ -101,9 +110,3 @@ do mapfile -d" " U1 < <(tr -d "." < /proc/uptime)
    _bar "$CPUS" "${U1[@]}" "${U0[@]}"
    U0=("${U1[@]}")
 done
-
-# while sleep 1
-# do T=$(cat /sys/bus/acpi/drivers/thermal/LNXTHERM:00/thermal_zone/temp)
-#    P=$(cat /sys/class/power_supply/BAT0/power_now)
-#    echo "$((T/1000)):$((P/1000000))" | tee ~/power.log
-# done
