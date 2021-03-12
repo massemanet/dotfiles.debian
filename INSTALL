@@ -31,7 +31,7 @@ sudo apt-get update &&
          pamix pandoc pass powertop python-is-python3 pulseaudio-module-bluetooth \
          ripgrep \
          shellcheck shellinabox socat strace \
-         telnet traceroute \
+         telnet texinfo traceroute \
          whois
 command -v snap && sudo apt purge --autoremove snapd
 
