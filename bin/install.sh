@@ -384,6 +384,18 @@ get-sway(){
              sway swaylock swayidle xwayland slurp grim wl-clipboard fzf wofi
 }
 
+get-waypipe() {
+    sudo apt-get update && \
+        sudo apt install -y --auto-remove meson
+    cd ~/git
+    [ -d waypipe ] || git clone https://gitlab.freedesktop.org/mstoeckl/waypipe.git
+    cd ~/git/waypipe
+    git pull --ff-only
+    mkdir -p /tmp/waypipe
+    meson --buildtype debugoptimized . /tmp/waypipe
+    sudo ninja -C /tmp/waypipe install
+}
+
 get-wireshark() {
     sudo apt-get update &&
         sudo apt-get install -y --auto-remove \
