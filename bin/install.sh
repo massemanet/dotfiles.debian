@@ -152,7 +152,7 @@ get-emacs() {
              libcairo2-dev libgtk-3-dev libgnutls28-dev libncurses-dev
     ./configure --with-pgtk --with-cairo --with-modules --without-makeinfo
     sudo make install
-    [ ! -d ~/.cask ] && \
+    [ ! -d ~/.cask ] &&
         curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python
     cd ~/.emacs.d
     ~/.cask/bin/cask install
@@ -379,7 +379,7 @@ get-steam() {
 }
 
 get-sway(){
-    sudo apt-get update && \
+    sudo apt-get update &&
         sudo apt install -y --auto-remove \
              sway swaylock swayidle xwayland slurp grim wl-clipboard fzf wofi
 }
