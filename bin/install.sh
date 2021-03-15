@@ -173,7 +173,7 @@ get-erlang() {
     [ -d ~/git/otp ] || git clone --depth=2 --branch "maint-$VSN" --single-branch \
                             https://github.com/erlang/otp.git ~/git/otp
     cd ~/git/otp/
-    git pull --depth=2
+    git pull --depth=2 --ff-only
     ./otp_build autoconf
     ./configure --without-megaco --without-odbc --without-jinterface --without-javac
     make
@@ -187,13 +187,19 @@ get-erlang() {
     rm -f ~/user_default.erl \
         && ln -s ~/install/user_default.erl ~
 
-    curl https://s3.amazonaws.com/rebar3/rebar3 > /tmp/rebar3
-    sudo cp /tmp/rebar3 /usr/local/bin/rebar3
-    sudo chmod +x /usr/local/bin/rebar3
+    VSN="3.14.1" # "[0-9\\.]+"
+    local DLPAGE="https://github.com/erlang/rebar3/releases"
+    local RE="download/[0-9\\.]+/rebar3"
+    r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
+    [ -z "$r" ] && err "no file at $DLPAGE."
+    echo "found file: $r"
+    curl -sL "$DLPAGE/$r" -o /tmp/rebar3
+    sudo install /tmp/rebar3 /usr/local/bin
 
     cd ~/git
     ( [ -d redbug ] || git clone https://github.com/massemanet/redbug )
     cd redbug
+    git pull --ff-only
     make
 }
 
