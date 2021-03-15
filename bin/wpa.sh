@@ -29,7 +29,7 @@ _connect() {
 
 _reset() {
     #sudo dhclient -r # release the ip?
-    sudo killall -HUP wpa_supplicant
+    sudo pkill -HUP wpa_supplicant
 }
 
 _open() {

@@ -1,5 +1,14 @@
 #!/bin/bash
 
+## if console font is unreadably small
+# cd /usr/share/consolefonts/
+# setfont Lat15-Terminus32x16.psf.gz
+
+## to temporarily attach to wifi
+# ip a
+# wpa_passphrase <ssid> <pwd> > /etc/wpa_supplicant/wpa_supplicant.conf
+# /sbin/wpa_supplicant -i<interface> -c/etc/wpa_supplicant/wpa_supplicant.conf -d &
+
 # set up sudo
 command -v sudo || su root -c "apt install -y sudo"
 groups | grep -q sudo || su root -c "/sbin/adduser $USER sudo"
@@ -25,12 +34,12 @@ sudo apt-get update &&
          imagemagick iputils-ping \
          jq \
          kitty \
-         linux-cpupower lksctp-tools \
+         linux-cpupower lksctp-tools lsof \
          make mosh \
          ncdu netcat-traditional \
-         pamix pandoc pass powertop python-is-python3 pulseaudio-module-bluetooth \
+         pamix pandoc pass powertop psmisc python-is-python3 pulseaudio-module-bluetooth \
          ripgrep \
-         shellcheck shellinabox socat strace \
+         shellcheck shellinabox socat strace sysstat \
          telnet texinfo traceroute \
          whois
 command -v snap && sudo apt purge --autoremove snapd
