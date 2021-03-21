@@ -29,7 +29,7 @@ sudo apt-get update &&
          bind9-dnsutils \
          cups curl \
          deborphan \
-         feh firmware-linux \
+         feh firefox-esr firmware-linux \
          g++ gdb git \
          imagemagick iputils-ping \
          jq \

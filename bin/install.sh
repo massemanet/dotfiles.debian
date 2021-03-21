@@ -292,6 +292,7 @@ get-keybase() {
     (cd /tmp && curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb)
     sudo apt install -y --auto-remove \
          /tmp/keybase_amd64.deb
+    sudo apt-get install -f
     run_keybase
 }
 
