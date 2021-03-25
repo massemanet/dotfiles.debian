@@ -74,10 +74,23 @@ _power() {
     local F V T P
     F=$(cpupower frequency-info -f | grep -Eo "[0-9][0-9]+")
     V=$(cat /sys/class/power_supply/BAT0/voltage_now)
-    T=$(cat /sys/bus/acpi/drivers/thermal/LNXTHERM\:00/thermal_zone/temp)
+    T=$(cat /sys/bus/acpi/drivers/thermal/LNXTHERM:00/thermal_zone/temp)
     P=$(cat /sys/class/power_supply/BAT0/power_now)
     echo "$((T/1000))C:$((P/1000000))W:$((V/1000))mV:$((F/1000))MHz"
 }
+
+_temp() {
+    xargs printf "scale=0;%d/1000\n" < /sys/devices/virtual/thermal/thermal_zone12/temp | bc | xargs printf "%sC"
+}
+
+_freq() {
+    cpupower frequency-info -f | grep -Eo "[0-9][0-9]+" | xargs printf "scale=1;%d/1000000\n" | bc | xargs printf "%sGHz"
+}
+
+_ssid() {
+    2>/dev/null iwgetid | cut -f2 -d"\""
+}
+
 
 _date() {
     date +'%Y-%m-%d'
@@ -100,13 +113,21 @@ _bar() {
     echo "],"
 }
 
-CPUS="$(grep siblings /proc/cpuinfo | head -n1 | cut -f2 -d":" | tr -d " ")"
-U0=(0 0)
-echo '{"version": 1}'
-echo "["
-echo "[],"
-while sleep 2
-do mapfile -d" " U1 < <(tr -d "." < /proc/uptime)
-   _bar "$CPUS" "${U1[@]}" "${U0[@]}"
-   U0=("${U1[@]}")
-done
+_swaybar_loop() {
+    U0=(0 0)
+    echo '{"version": 1}'
+    echo "["
+    echo "[],"
+    while sleep 2
+    do mapfile -d" " U1 < <(tr -d "." < /proc/uptime)
+       _bar "$CPUS" "${U1[@]}" "${U0[@]}"
+       U0=("${U1[@]}")
+    done
+}
+
+case "$1" in
+    "")   _swaybar_loop;;
+    temp) _temp;;
+    freq) _freq;;
+    ssid) _ssid;;
+esac
