@@ -93,7 +93,7 @@ _ssid() {
 
 
 _date() {
-    date +'%Y-%m-%d'
+    date +'%Y-%m-%d - %a'
 }
 
 _time() {
@@ -114,6 +114,7 @@ _bar() {
 }
 
 _swaybar_loop() {
+    CPUS="$(grep siblings /proc/cpuinfo | head -n1 | cut -f2 -d":" | tr -d " ")"
     U0=(0 0)
     echo '{"version": 1}'
     echo "["
@@ -125,8 +126,8 @@ _swaybar_loop() {
     done
 }
 
-case "$1" in
-    "")   _swaybar_loop;;
+case "${1:-swaybar}" in
+    swaybar) _swaybar_loop;;
     temp) _temp;;
     freq) _freq;;
     ssid) _ssid;;
