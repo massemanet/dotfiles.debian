@@ -93,7 +93,7 @@ _ssid() {
 
 
 _date() {
-    date +'%Y-%m-%d - %a'
+    date +'%Y-%m-%d(%a)'
 }
 
 _time() {
