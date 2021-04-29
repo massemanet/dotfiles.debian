@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+_usage() {
+    echo "$(basename "$0") release <system> <hash> | deautomate <system> | list"
+}
+
+_context() {
+    local REGION=dub
+    local ENV=${1:-dev}
+    kubectl config get-contexts |\
+        grep "$REGION.$ENV.wgtwo.com" |\
+        cut -c2- |\
+        awk '{print $1}'
+}
+
+_list() {
+    2>/dev/null fluxctl --context "$(_context dev)" --k8s-fwd-ns connectivity \
+            list-workloads |\
+        grep starlet |\
+        sed 's|connectivity:statefulset/||' |\
+        sed 's|registry.wgtwo.com/reg/connectivity/||' |\
+        column -t
+}
+
+_deatomate() {
+    local SYSTEM="$1"
+    if [ -z "$SYSTEM" ]; then exit 3; fi
+    fluxctl  --context "$(_context dev)" --k8s-fwd-ns=connectivity \
+             deautomate \
+             --workload=statefulset/"$SYSTEM"
+}
+
+_release() {
+    local SYSTEM="$1"
+    local HASH="$2"
+    if [ -z "$SYSTEM" ] || [ -z "$HASH" ]; then exit 3; fi
+    fluxctl --context "$(_context dev)" --k8s-fwd-ns=connectivity \
+            release \
+            --workload=connectivity:statefulset/"$SYSTEM" \
+            --update-image=registry.wgtwo.com/reg/connectivity/starlet:dev-"$HASH"
+}
+
+case "$1" in
+    release) _release "${2:-""}" "${3:-""}";;
+    deautomate) _deatomate "${2:-""}";;
+    list) _list;;
+    *) _usage;;
+esac
