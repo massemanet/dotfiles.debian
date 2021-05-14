@@ -21,6 +21,7 @@ foo*
 /.dbus/
 /.docker/
 /.emacs.d/
+/.emacs.D/
 /.erlang
 /.erlang.cookie
 /.face*

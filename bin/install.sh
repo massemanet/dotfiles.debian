@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -143,19 +143,23 @@ get-docker-compose() {
 
 # emacs for wayland
 get-emacs() {
+    sudo apt update &&
+        sudo apt install -y --auto-remove \
+             libcairo2-dev libgtk-3-dev libgnutls28-dev libncurses-dev libjansson-dev libgccjit-10-dev
+
     cd ~/git
     [ -d emacs ] || git clone --branch feature/pgtk --single-branch git://git.sv.gnu.org/emacs.git
     cd emacs/
+    git sync
     ./autogen.sh
-    sudo apt update &&
-        sudo apt install -y --auto-remove \
-             libcairo2-dev libgtk-3-dev libgnutls28-dev libncurses-dev
-    ./configure --with-pgtk --with-cairo --with-modules --without-makeinfo
+    ./configure --with-pgtk --with-json --with-native-compilation --with-file-notification=inotify
     sudo make install
-    [ ! -d ~/.cask ] &&
-        curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python
-    cd ~/.emacs.d
-    ~/.cask/bin/cask install
+
+    cd
+    rm -rf .emacs.d
+    git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+    PATH=$HOME/.emacs.d/bin:$PATH
+    doom install
 }
 
 # install erlang + rebar + redbug

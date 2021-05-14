@@ -8,7 +8,7 @@ err() {
 }
 
 OTP=~/git/otp
-ERL="$(readlink -f "${1:-~/git/loltel/connectivity/erlang}")"
+ERL="$(readlink -f "${1:-$HOME/git/loltel/connectivity/erlang}")"
 
 [ -f "$ERL/rebar.config" ] || err "not a rebar project: $1"
 

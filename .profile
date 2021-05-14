@@ -1,10 +1,12 @@
 # one path to rule them all
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
 [ -d /opt/bin ] && PATH=/opt/bin:$PATH
 [ -d "$HOME/bin" ] && PATH=$HOME/bin:$PATH
 [ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH"
 [ -d "/usr/local/go/bin" ] && PATH="/usr/local/go/bin:$PATH"
 [ -d "$HOME/.krew" ] && PATH=$HOME/.krew/bin:$PATH
+[ -d "$HOME/.emacs.d/bin" ] && PATH=$HOME/.emacs.d/bin:$PATH
 
 # one locale to rule them all
 unset  LC_ALL
