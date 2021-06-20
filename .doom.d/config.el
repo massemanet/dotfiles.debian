@@ -58,33 +58,38 @@
       "C->"   #'end-of-buffer
       "C-v"   #'scroll-up
       "C-y"   #'yank
-      "C-z"   #'undo
+      "C-z"   #'undo-fu-only-undo
       "C-{"   #'flycheck-previous-error
       "C-}"   #'flycheck-next-error
+      "C-x f" nil
+      "C-S-SPC" #'just-one-space
       "C-S-A" #'align-regexp
       "C-S-C" #'execute-extended-command
       "C-S-G" #'goto-line
       "C-S-K" #'kill-region
       "C-S-N" #'forward-list
+      "C-S-O" #'other-window
       "C-S-P" #'backward-list
       "C-S-Q" #'fill-paragraph
       "C-S-R" #'revert-buffer
       "C-S-T" #'transpose-lines
       "C-S-V" #'scroll-down
       "C-S-W" #'copy-region-as-kill
-      "C-S-Y" #'counsel-yank-pop)
+      "C-S-Y" #'counsel-yank-pop
+      "C-S-Z" #'undo-fu-only-redo)
 
 (map! :map minibuffer-local-map
       "C-n" #'next-history-element
       "C-p" #'previous-history-element)
 
-;;(projectile-register-project-type
-;; 'erlang
-;; '("rebar.config")
-;; :project-file "rebar.config"
-;; :compile "rebar3 compile"
-;; :test "rebar3 eunit"
-;;\ :run "rebar3 shell")
+(map! (:when (featurep! :completion ivy)
+       (:after ivy
+        :map ivy-minibuffer-map
+        "TAB"   #'ivy-partial-or-done)))
+
+(smartparens-global-mode -1)
+(nyan-mode)
+(setq doom-theme 'doom-acario-dark)
 
 (set-lookup-handlers! '(erlang-mode)
   :definition #'ivy-erlang-complete-find-definition
