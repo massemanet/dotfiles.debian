@@ -174,10 +174,13 @@ get-erlang() {
     sudo apt update &&
         sudo apt-get install -y --auto-remove \
              libncurses-dev libpcap-dev libsctp-dev libssl-dev libwxgtk3.0-gtk3-dev
-    [ -d ~/git/otp ] || git clone --depth=2 --branch "maint-$VSN" --single-branch \
-                            https://github.com/erlang/otp.git ~/git/otp
+    [ -d ~/git/otp ] || git clone --depth=2 https://github.com/erlang/otp.git ~/git/otp
     cd ~/git/otp/
+    git remote set-branches origin 'maint-*'
+    git fetch -v
+    git co "maint-$VSN"
     git pull --depth=2 --ff-only
+    git clean -fdx
     ./otp_build autoconf
     ./configure --without-megaco --without-odbc --without-jinterface --without-javac
     make
