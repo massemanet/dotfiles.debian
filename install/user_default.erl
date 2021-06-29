@@ -107,6 +107,15 @@ pi(P,Item) -> process_info(pid(P),Item).
 os(Cmd) ->
   lists:foreach(fun(X)->wr("~s~n",X)end,string:tokens(os:cmd(Cmd),"\n")).
 
+sigg(Mod) ->
+  lists:foldr(
+    fun(E,O)->
+        case element(1,E) of
+          function -> [{element(3,E),element(4,E),[[case element(1,A) of nil -> nil; _->element(3,A)end||A<-element(3,C)]||C<-element(5,E), element(1,C) == clause]}|O];
+          _ -> O
+        end
+    end, [], e(1,e(3,binary_to_term(e(2,e(1,e(2,e(2,beam_lib:chunks(code:which(Mod), ["Dbgi"]))))))))).
+
 sig(M) ->
   sig(M,'').
 sig(M,F) ->

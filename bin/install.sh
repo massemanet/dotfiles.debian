@@ -194,15 +194,6 @@ get-erlang() {
     rm -f ~/user_default.erl \
         && ln -s ~/install/user_default.erl ~
 
-    VSN="3.14.1" # "[0-9\\.]+"
-    local DLPAGE="https://github.com/erlang/rebar3/releases"
-    local RE="download/[0-9\\.]+/rebar3"
-    r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
-    [ -z "$r" ] && err "no file at $DLPAGE."
-    echo "found file: $r"
-    curl -sL "$DLPAGE/$r" -o /tmp/rebar3
-    sudo install /tmp/rebar3 /usr/local/bin
-
     cd ~/git
     ( [ -d redbug ] || git clone https://github.com/massemanet/redbug )
     cd redbug
@@ -365,6 +356,18 @@ get-python() {
         sudo apt-get install -y python2 python3 &&
         sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 &&
         sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2
+}
+
+get-rebar() {
+    local VSN="${1:-}"
+
+    local DLPAGE="https://github.com/erlang/rebar3/releases"
+    local RE="download/[0-9\\.]+/rebar3"
+    r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
+    [ -z "$r" ] && err "no file at $DLPAGE."
+    echo "found file: $r"
+    curl -sL "$DLPAGE/$r" -o /tmp/rebar3
+    sudo install /tmp/rebar3 /usr/local/bin
 }
 
 get-rust() {
