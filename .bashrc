@@ -6,6 +6,7 @@
 
 # make scp work by checking for a tty
 [ -t 0 ] || return
+[[ "${-}" =~ 'i' ]] || return
 
 # clean up
 unalias -a

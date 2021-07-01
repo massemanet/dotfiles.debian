@@ -61,6 +61,8 @@
       "C-z"   #'undo-fu-only-undo
       "C-{"   #'flycheck-previous-error
       "C-}"   #'flycheck-next-error
+      "C-\""  #'next-error
+      "C-:"   #'previous-error
       "C-x f" nil
       "C-S-SPC" #'just-one-space
       "C-S-A" #'align-regexp
