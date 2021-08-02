@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+_usage() {
+    echo "$(basename "$0") list | scan | reset | setup <ssid>"
+    exit 0
+}
+
+_list() {
+    grep "ssid" "$CFG"
+}
+
+_scan() {
+    sudo iwlist "$INTERFACE" scan | \
+        grep "ESSID" | \
+        cut -f2- -d":" | \
+        grep -Eo '"[a-zA-Z0-9_ -]+"' | \
+        sort -u | \
+        xargs printf "%s\n"
+}
+
 _setup() {
     local SSID="$1"
 
@@ -19,12 +37,7 @@ HERE
          [ "$KEEP" = "y" ] || exit 0
          echo "$CONF" | sudo tee -a "$CFG"
     fi
-    _connect
-}
-
-_connect() {
-    sudo wpa_supplicant -B -i "$INTERFACE" -c "$CFG"
-    sudo dhclient "$INTERFACE"
+    _reset
 }
 
 _reset() {
@@ -32,17 +45,13 @@ _reset() {
     sudo pkill -HUP wpa_supplicant
 }
 
-_open() {
-    ## – Connecting to open network
-    sudo iw dev "$INTERFACE" connect "$SSID"
-}
-
 INTERFACE="$(iw dev | grep Interface  | cut -f2 -d" ")"
 CFG="/etc/wpa_supplicant/wpa_supplicant-$INTERFACE.conf"
 
 case $1 in
-    open) _open "$1";;
+    scan) _scan;;
+    list) _list;;
     reset) _reset;;
-    "") _connect;;
-    *) _setup "$1";;
+    setup) _setup "$2";;
+    *) _usage;;
 esac
