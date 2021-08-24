@@ -18,26 +18,21 @@ _scan() {
         xargs printf "%s\n"
 }
 
-_setup() {
-    local SSID="$1"
-
-    if [ ! -f "$CFG" ]
-    then cat | sudo tee "$CFG" <<HERE
+_setup_init() {
+    cat <<HERE
 ctrl_interface=/run/wpa_supplicant
 ctrl_interface_group=sudo
 update_config=1
 HERE
-    fi
+}
 
-    if ! grep -q 'ssid=:"'"$SSID"'"' "$CFG"
-    then read -r -p "password for $SSID: " -s KEY
-         CONF=$(wpa_passphrase "$SSID" "$KEY" | grep -v "\#")
-         echo "$CONF"
-         read -r -p "looks good? (y/n):" KEEP
-         [ "$KEEP" = "y" ] || exit 0
-         echo "$CONF" | sudo tee -a "$CFG"
-    fi
-    _reset
+_no_passphrase() {
+    cat <<HERE
+network={
+    ssid="$1"
+    key_mgmt=NONE
+}
+HERE
 }
 
 _reset() {
@@ -45,13 +40,44 @@ _reset() {
     sudo pkill -HUP wpa_supplicant
 }
 
+_remove() {
+    local SSID="$1"
+    TMP="$(mktemp "/tmp/XXX")"
+
+    if [ -n "$SSID" ]
+    then if awk -v RS="network=" '$2 !~ /ssid="'"$SSID"'"/{if (0<n) printf "network="; printf $0; n++}' < "$CFG" > "$TMP"
+         then sudo mv "$TMP" "$CFG"
+         fi
+    fi
+}
+
+_setup() {
+    local SSID="$1"
+
+    [ ! -f "$CFG" ] && echo "$(_setup_init)" | sudo tee "$CFG"
+
+    if ! grep -q 'ssid=:"'"$SSID"'"' "$CFG"
+    then read -r -p "password for $SSID: " -s KEY
+         if [ -z "$KEY" ]
+         then CONF=$(_no_passphrase "$SSID")
+         else CONF=$(wpa_passphrase "$SSID" "$KEY" | grep -v "\#")
+         fi
+         echo "$CONF"
+         read -r -p "looks good? (y/n): " KEEP
+         [ "$KEEP" = "y" ] || exit 0
+         echo "$CONF" | sudo tee -a "$CFG"
+    fi
+    _reset
+}
+
 INTERFACE="$(iw dev | grep Interface  | cut -f2 -d" ")"
 CFG="/etc/wpa_supplicant/wpa_supplicant-$INTERFACE.conf"
 
-case $1 in
-    scan) _scan;;
-    list) _list;;
+case "$1" in
+    scan)  _scan;;
+    list)  _list;;
     reset) _reset;;
+    rm)    _remove "$2";;
     setup) _setup "$2";;
     *) _usage;;
 esac
