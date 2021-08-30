@@ -67,6 +67,7 @@
       "C-S-SPC" #'just-one-space
       "C-S-A" #'align-regexp
       "C-S-C" #'execute-extended-command
+      "C-S-F" #'git-grep
       "C-S-G" #'goto-line
       "C-S-K" #'kill-region
       "C-S-N" #'forward-list
@@ -89,9 +90,9 @@
         :map ivy-minibuffer-map
         "TAB"   #'ivy-partial-or-done)))
 
-(smartparens-global-mode -1)
 (nyan-mode)
 (setq doom-theme 'doom-acario-dark)
+(setq sp-autoinsert-pair nil)
 
 (set-lookup-handlers! '(erlang-mode)
   :definition #'ivy-erlang-complete-find-definition
@@ -108,3 +109,7 @@
           flycheck-erlang-library-path libs
           ivy-erlang-complete-erlang-root erl-path
           ivy-erlang-complete-project-root root)))
+
+(defun git-grep (pattern)
+  (interactive "sPattern: ")
+  (grep (format "TERM=xterm git grep -En \"%s\" | cat" pattern)))

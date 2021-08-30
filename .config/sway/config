@@ -14,6 +14,9 @@ set $term /usr/bin/kitty
 # alttab
 set $alttab $HOME/bin/alttab.sh
 
+# cursors
+seat seat0 xcursor_theme Adwaita 36
+
 # launcher
 set $launcher "bash -c 'compgen -c | grep -E "^[a-z]" | sort -u | wofi -G --dmenu | xargs -r swaymsg -t command exec'"
 
