@@ -40,8 +40,9 @@ sudo apt-get update &&
          pamix pandoc pass powertop psmisc python-is-python3 pulseaudio-module-bluetooth \
          ripgrep \
          shellcheck shellinabox socat strace sysstat \
-         tcpdump telnet texinfo tmux traceroute \
+         tcpdump telnet texinfo texlive-latex-recommended tmux traceroute \
          whois
+
 command -v snap && sudo apt purge --autoremove snapd
 
 # get my stuff
