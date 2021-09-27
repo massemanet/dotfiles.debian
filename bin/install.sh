@@ -154,12 +154,6 @@ get-emacs() {
     ./autogen.sh
     ./configure --with-pgtk --with-json --with-native-compilation --with-file-notification=inotify
     sudo make install
-
-    cd
-    rm -rf .emacs.d
-    git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
-    PATH=$HOME/.emacs.d/bin:$PATH
-    doom install
 }
 
 # install erlang + rebar + redbug

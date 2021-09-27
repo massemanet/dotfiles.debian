@@ -20,8 +20,7 @@ foo*
 /.config/
 /.dbus/
 /.docker/
-/.emacs.d/
-/.emacs.D/
+/.emacs.*/
 /.erlang
 /.erlang.cookie
 /.face*
