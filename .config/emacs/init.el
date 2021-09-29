@@ -1,3 +1,9 @@
+;;; init --- an init file.
+;;; Commentary:
+;;; an init file.
+;;; Code:
+;;;  an init file.
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -49,7 +55,6 @@
 (delete-selection-mode t)
 (ido-mode t)
 (fset 'yes-or-no-p 'y-or-n-p)
-(server-start)
 (nyan-mode 1)
 (global-flycheck-mode)
 (flycheck-popup-tip-mode)
@@ -60,7 +65,9 @@
 (if (featurep 'tooltip)    (tooltip-mode    -1))
 (if (featurep 'scroll-bar) (scroll-bar-mode -1))
 (if (featurep 'menu-bar)   (menu-bar-mode   -1))
-(defun ido-kill-emacs-hook () (ignore-errors (ido-save-history)))
+(defun ido-kill-emacs-hook ()
+  "Ido is annoying."
+  (ignore-errors (ido-save-history)))
 
 (setq-default indent-tabs-mode nil)
 (setq
