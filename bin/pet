@@ -80,16 +80,36 @@ pack() {
     mv /tmp/pet.tgz.gpg "$DEST"
 }
 
+get_pet() {
+    local PET="$1"
+    local HOST
+
+    read -r -p "pet file host name: " HOST
+    scp "$HOST:~/$(basename "$PET")" "$PET"
+}
+
 unpack() {
     local PET="${2:-/tmp/pet.tgz.gpg}"
-    [ ! -f "$PET" ] && echo "no pet file." && exit 1
-    gpg -d "$PET" > /tmp/$$.tgz
-    tar -C "$HOME" -xzf /tmp/$$.tgz
+    if [ ! -f "$PET" ]
+    then if ! get_pet "$PET"
+         then echo "no pet file." && exit 1
+         else gpg -d "$PET" > /tmp/$$.tgz
+              tar -C "$HOME" -xzf /tmp/$$.tgz
+         fi
+    fi
+}
+
+ssh() {
+    read -r -p"hostname: " HOST
+    mkdir -p $DEST/ssh
+    scp $HOST:~/.ssh/id_rsa $DEST/ssh/id_rsa_$USER
+    scp $HOST:~/.ssh/id_rsa.pub $DEST/ssh/id_rsa_$USER.pub
 }
 
 DEST="$HOME/pet"
 case "$1" in
     init)   init;;
+    ssh)    ssh $DEST;;
     unpack) unpack "$2";;
     pack)   pack;;
     *)      echo "unrecognized command: $1";;

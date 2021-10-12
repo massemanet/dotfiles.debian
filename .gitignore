@@ -43,6 +43,7 @@ foo*
 /.lmmsrc.xml
 /.local/
 /.localbashrc
+/.mlterm/
 /.mozilla/
 /.nmcli*
 /.nv/

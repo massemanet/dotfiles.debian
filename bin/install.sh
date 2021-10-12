@@ -392,7 +392,7 @@ get-steam() {
 get-sway(){
     sudo apt-get update &&
         sudo apt install -y --auto-remove \
-             sway swaylock swayidle xwayland slurp grim wl-clipboard fzf wofi
+             sway swayidle xwayland slurp grim wl-clipboard fzf wofi
 }
 
 get-waypipe() {

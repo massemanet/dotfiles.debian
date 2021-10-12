@@ -9,17 +9,55 @@
 # wpa_passphrase <ssid> <pwd> > /etc/wpa_supplicant/wpa_supplicant.conf
 # /sbin/wpa_supplicant -i<interface> -c/etc/wpa_supplicant/wpa_supplicant.conf -d &
 
+## to get this file
+# curl https://raw.githubusercontent.com/massemanet/dotfiles.debian/master/INSTALL > ~/INSTALL
+
 # set up sudo
 command -v sudo || su root -c "apt install -y sudo"
 groups | grep -q sudo || su root -c "/sbin/adduser $USER sudo"
 
 # timezone
-TZ="Europe/Stockholm"
+TZ="Europe/Gibraltar"
 [ "$(timedatectl show | grep Timezone | cut -f2 -d"=")" = "$TZ" ] || sudo timedatectl set-timezone "$TZ"
 
 # get non-free drivers
 S=/etc/apt/sources.list
 grep -qE ' main$' "$S" && sudo sed -i 's/ main$/ main contrib non-free/g' "$S"
+
+# set up keyboard
+sudo tee /etc/default/keyboard <<HERE
+XKBMODEL="pc105"
+XKBLAYOUT="us"
+XKBVARIANT=""
+XKBOPTIONS="ctrl:swapcaps_hyper"
+BACKSPACE="guess"
+HERE
+
+# use systemd for networking
+sudo apt purge ifupdown
+sudo tee /etc/systemd/network/en.network <<HERE
+[Match]
+Name=en*
+[Network]
+DHCP=yes
+HERE
+sudo tee /etc/systemd/network/wl.network <<HERE
+[Match]
+Name=wl*
+[Network]
+DHCP=yes
+HERE
+
+sudo ln -sf \
+     /lib/systemd/system/wpa_supplicant@.service \
+     "/etc/systemd/system/multi-user.target.wants/wpa_supplicant@$(iw dev | grep Interface  | cut -f2 -d" ").service"
+
+sudo systemctl enable systemd-networkd
+sudo systemctl restart systemd-networkd
+
+sudo systemctl enable systemd-resolved
+sudo systemctl restart systemd-resolved
+sudo rm -f /etc/resolv.conf && sudo ln -s /run/systemd/resolve/resolv.conf /etc/
 
 # install some sane stuff
 sudo apt-get update &&
@@ -31,7 +69,7 @@ sudo apt-get update &&
          deborphan \
          feh firefox-esr firmware-linux \
          g++ gdb gimp git \
-         imagemagick iputils-ping \
+         i3 imagemagick iputils-ping \
          jq \
          kitty \
          linux-cpupower lksctp-tools lsof \
@@ -41,7 +79,8 @@ sudo apt-get update &&
          ripgrep \
          shellcheck shellinabox socat strace sysstat \
          tcpdump telnet texinfo texlive-latex-recommended tmux traceroute \
-         whois
+         whois \
+         xinit
 
 command -v snap && sudo apt purge --autoremove snapd
 
@@ -61,7 +100,7 @@ sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/log
 
 # get the pet files
 [ -d ~/pet ] || ~/bin/pet unpack
-
+exit 0
 ~/bin/drivers.sh
 
 # install utilities
