@@ -1,0 +1,4 @@
+scrollbar_mode = none
+fg_color = #66ff66
+bg_color = black
+logsize = 65536

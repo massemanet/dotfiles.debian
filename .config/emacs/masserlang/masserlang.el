@@ -3,7 +3,6 @@
 ;;; masse's erlang setup
 ;;; Code:
 
-(require 'align)
 (require 'erlang-start)
 
 (defun my-shell-mode ()

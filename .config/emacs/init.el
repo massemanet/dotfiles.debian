@@ -30,6 +30,7 @@
 (straight-use-package 'json-reformat)
 (straight-use-package 'json-snatcher)
 (straight-use-package 'macrostep)
+(straight-use-package 'yaml-mode)
 (straight-use-package 'magit)
 (straight-use-package 'magit-gitflow)
 (straight-use-package 'magit-popup)
@@ -45,14 +46,14 @@
 ;; legacy
 (add-to-list 'load-path "~/.config/emacs/masserlang")
 (add-to-list 'load-path "~/.config/emacs/fdlcap")
-;;(require 'masserlang)
-;;(require 'fdlcap)
+(require 'masserlang)
+(require 'fdlcap)
 
 ;; turn on good shit
 (show-paren-mode t)
 (transient-mark-mode t)
 (global-font-lock-mode t)
-(delete-selection-mode t)
+(delete-selection-mode 1)
 (ido-mode t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (nyan-mode 1)

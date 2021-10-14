@@ -35,7 +35,7 @@ sudo apt-get update &&
          jq \
          kitty \
          linux-cpupower lksctp-tools lsof \
-         make mosh \
+         make mlterm mosh \
          ncdu netcat-traditional \
          pamix pandoc pass powertop psmisc python-is-python3 pulseaudio-module-bluetooth \
          ripgrep \
