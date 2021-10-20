@@ -5,8 +5,26 @@ _usage() {
     exit 0
 }
 
+_err() {
+    echo "$1"
+    exit 1
+}
+
+_check() {
+    [ -z "${2:-}" ] && _err "missing $1"
+}
+
+_select() {
+    _check "SSID" "${1:-}"
+    N="$(sudo wpa_cli list_networks | grep "$1" | cut -f1)"
+    if [ -n "$N" ]
+    then sudo wpa_cli select_network "$N"
+    else _err "no such network"
+    fi
+}
+
 _list() {
-    grep "ssid" "$CFG"
+    sudo wpa_cli list_networks | tail -n+3 | cut -f2
 }
 
 _scan() {
@@ -36,31 +54,30 @@ HERE
 }
 
 _reset() {
-    #sudo dhclient -r # release the ip?
-    sudo pkill -HUP wpa_supplicant
+    sudo systemctl restart wpa_supplicant
 }
 
 _remove() {
-    local SSID="$1"
+    _check "SSID" "${1:-}"
     TMP="$(mktemp "/tmp/XXX")"
 
-    if [ -n "$SSID" ]
-    then if awk -v RS="network=" '$2 !~ /ssid="'"$SSID"'"/{if (0<n) printf "network="; printf $0; n++}' < "$CFG" > "$TMP"
+    if [ -n "$1" ]
+    then if awk -v RS="network=" '$2 !~ /ssid="'"$1"'"/{if (0<n) printf "network="; printf $0; n++}' < "$CFG" > "$TMP"
          then sudo mv "$TMP" "$CFG"
          fi
     fi
 }
 
 _setup() {
-    local SSID="$1"
+    _check "SSID" "${1:-}"
 
-    [ ! -f "$CFG" ] && echo "$(_setup_init)" | sudo tee "$CFG"
+    [ ! -f "$CFG" ] && _setup_init | sudo tee "$CFG"
 
-    if ! grep -q 'ssid=:"'"$SSID"'"' "$CFG"
-    then read -r -p "password for $SSID: " -s KEY
+    if ! grep -q 'ssid=:"'"$1"'"' "$CFG"
+    then read -r -p "password for $1: " -s KEY
          if [ -z "$KEY" ]
-         then CONF=$(_no_passphrase "$SSID")
-         else CONF=$(wpa_passphrase "$SSID" "$KEY" | grep -v "\#")
+         then CONF=$(_no_passphrase "$1")
+         else CONF=$(wpa_passphrase "$1" "$KEY" | grep -v "\#")
          fi
          echo "$CONF"
          read -r -p "looks good? (y/n): " KEEP
@@ -74,10 +91,11 @@ INTERFACE="$(iw dev | grep Interface  | cut -f2 -d" ")"
 CFG="/etc/wpa_supplicant/wpa_supplicant-$INTERFACE.conf"
 
 case "$1" in
-    scan)  _scan;;
-    list)  _list;;
-    reset) _reset;;
-    rm)    _remove "$2";;
-    setup) _setup "$2";;
+    scan)      _scan;;
+    ls|list)   _list;;
+    reset)     _reset;;
+    "select")  _select "${2:-}";;
+    rm|remove) _remove "${2:-}";;
+    add|setup) _setup  "${2:-}";;
     *) _usage;;
 esac

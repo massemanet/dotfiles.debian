@@ -19,7 +19,7 @@ eval "$(dircolors)"
 
 . /etc/bash_completion
 # shellcheck disable=SC1090
-. <(kubectl completion bash)
+command -v kubectl 1>/dev/null && . <(kubectl completion bash)
 
 # define some git helpers
 # shellcheck source=bin/gitfunctions

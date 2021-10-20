@@ -29,11 +29,10 @@ sudo apt-get update &&
          bind9-dnsutils \
          cups curl \
          deborphan \
-         feh firefox-esr firmware-linux \
-         g++ gdb gimp git \
+         foot firmware-linux \
+         g++ gdb git \
          imagemagick iputils-ping \
          jq \
-         kitty \
          linux-cpupower lksctp-tools lsof \
          make mlterm mosh \
          ncdu netcat-traditional \
@@ -65,16 +64,19 @@ sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/log
 ~/bin/drivers.sh
 
 # install utilities
-command -v sway          || ~/bin/install.sh sway
-command -v emacs         || ~/bin/install.sh emacs
-command -v brave-browser || ~/bin/install.sh brave
-command -v chromium      || ~/bin/install.sh chromium
-command -v keybase       || ~/bin/install.sh keybase
-command -v spotify       || ~/bin/install.sh spotify
-command -v aws-vault     || ~/bin/install.sh aws-vault
-command -v aws           || ~/bin/install.sh awscli
-command -v bazel         || (~/bin/install.sh bazel && ~/bin/install.sh bazelisk)
-command -v docker        || ~/bin/install.sh docker
-command -v kubectl       || ~/bin/install.sh kubectl
-command -v wireshark     || ~/bin/install.sh wireshark
-command -v erl           || ~/bin/install.sh erlang
+command -v sway  || ~/bin/install.sh sway
+command -v emacs || ~/bin/install.sh emacs
+command -v erl   || ~/bin/install.sh erlang
+# command -v brave-browser || ~/bin/install.sh brave
+# command -v chromium      || ~/bin/install.sh chromium
+# command -v firefox       || ~/bin/install.sh firefox
+# command -v keybase       || ~/bin/install.sh keybase
+# command -v spotify       || ~/bin/install.sh spotify
+# command -v aws-vault     || ~/bin/install.sh aws-vault
+# command -v aws           || ~/bin/install.sh awscli
+# command -v bazel         || (~/bin/install.sh bazel && ~/bin/install.sh bazelisk)
+# command -v docker        || ~/bin/install.sh docker
+# command -v kubectl       || ~/bin/install.sh kubectl
+# command -v gimp          || ~/bin/install.sh gimp
+# command -v wireshark     || ~/bin/install.sh wireshark
+

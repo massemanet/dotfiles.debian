@@ -195,6 +195,12 @@ get-erlang() {
     make
 }
 
+get-firefox() {
+    sudo apt update &&
+        sudo apt install -y --auto-remove \
+             firefox-esr
+}
+    
 get-fluxctl() {
     local r
     local VSN="${1:-}"
@@ -206,6 +212,12 @@ get-fluxctl() {
     echo "found file: $r"
     curl -sL "$DLPAGE/$r" -o /tmp/fluxctl
     sudo install /tmp/fluxctl /usr/bin
+}
+
+get-gimp() {
+    sudo apt update &&
+        sudo apt install -y --auto-remove \
+             gimp
 }
 
 get-go() {

@@ -9,7 +9,7 @@ set $mod Mod4
 set $internal LVDS-1
 
 # Your preferred terminal emulator
-set $term /usr/bin/kitty
+set $term /usr/bin/foot
 
 # alttab
 set $alttab $HOME/bin/alttab.sh
@@ -24,7 +24,7 @@ for_window [class="Brave-browser"] move window to workspace 1:brave
 for_window [class="Chromium"] move window to workspace 2:chromium
 for_window [class="Firefox"] move window to workspace 2:chromium
 for_window [class="Spotify"] move window to workspace 3:spotify
-for_window [app_id="kitty"] move window to workspace 4:term
+for_window [app_id="foot"] move window to workspace 4:term
 for_window [app_id=".*term.*"] move window to workspace 4:term
 for_window [app_id="emacs"] move window to workspace 5:emacs
 

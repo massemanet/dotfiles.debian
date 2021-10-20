@@ -8,7 +8,7 @@ I always have 5 applications running;
 *  two browsers (`Brave` and `ungoogled-chromium`)
 *  `spotify`
 *  `emacs` (28, compiled from the `features/pgtk` branch)
-*  `kitty` (terminal emulator)
+*  `xterm` (or similar, e.g. `foot` or `mlterm`)
 
 I run this on three kinds of machines;
 *  X220 (assembled from broken ones from eBay)
