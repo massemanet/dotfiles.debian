@@ -16,9 +16,9 @@ _check() {
 
 _select() {
     _check "SSID" "${1:-}"
-    N="$(sudo wpa_cli list_networks | grep "$1" | cut -f1)"
+    N="$(sudo wpa_cli -i $INTERFACE list_networks | grep "$1" | cut -f1)"
     if [ -n "$N" ]
-    then sudo wpa_cli select_network "$N"
+    then sudo wpa_cli -i $INTERFACE select_network "$N"
     else _err "no such network"
     fi
 }
