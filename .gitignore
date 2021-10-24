@@ -45,6 +45,7 @@ foo*
 /.localbashrc
 /.mozilla/
 /.mlterm/
+/.nano/
 /.nmcli*
 /.nv/
 /.pam_environment

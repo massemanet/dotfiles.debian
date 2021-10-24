@@ -1,4 +1,0 @@
-build --disk_cache=~/.cache/bazel/remote_cache
-build --javabase=@bazel_tools//tools/jdk:remote_jdk11
-
-test --flaky_test_attempts=1
