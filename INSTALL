@@ -44,8 +44,13 @@ sudo apt-get update &&
 # get the pet files
 [ -d ~/pet ] || ~/bin/pet keys
 
+# use systemd networking
+bin/go-systemd
+
+# remove X11, java, and node
+dpkg --get-selections | grep -v deinstall | grep -E "libx11|nodejs|java|jdk" | xargs sudo apt purge -y 
+
 # install utilities
 command -v emacs || ~/bin/install.sh emacs
 command -v erl   || ~/bin/install.sh erlang
 # command -v keybase       || ~/bin/install.sh keybase
-# command -v docker        || ~/bin/install.sh docker
