@@ -9,40 +9,26 @@
 # wpa_passphrase <ssid> <pwd> > /etc/wpa_supplicant/wpa_supplicant.conf
 # /sbin/wpa_supplicant -i<interface> -c/etc/wpa_supplicant/wpa_supplicant.conf -d &
 
-# set up sudo
-command -v sudo || su root -c "apt install -y sudo"
-groups | grep -q sudo || su root -c "/sbin/adduser $USER sudo"
+# add a user
+# sudo adduser masse sudo
 
 # timezone
-TZ="Europe/Stockholm"
-[ "$(timedatectl show | grep Timezone | cut -f2 -d"=")" = "$TZ" ] || sudo timedatectl set-timezone "$TZ"
-
-# get non-free drivers
-S=/etc/apt/sources.list
-grep -qE ' main$' "$S" && sudo sed -i 's/ main$/ main contrib non-free/g' "$S"
+TZ="Europe/Gibraltar"
+[ "$(timedatectl show | grep Timezone | cut -f2 -d"=")" = "$TZ" ] || \
+    sudo timedatectl set-timezone "$TZ"
 
 # install some sane stuff
 sudo apt-get update &&
     sudo apt-get upgrade -y &&
     sudo apt-get install --autoremove -y \
-         aspell-en aspell-sv automake \
-         bind9-dnsutils \
-         cups curl \
          deborphan \
-         foot firmware-linux \
-         g++ gdb git \
-         imagemagick iputils-ping \
          jq \
-         linux-cpupower lksctp-tools lsof \
-         make mlterm mosh \
-         ncdu netcat-traditional \
-         pamix pandoc pass powertop psmisc python-is-python3 pulseaudio-module-bluetooth \
-         ripgrep \
-         shellcheck shellinabox socat strace sysstat \
-         tcpdump telnet texinfo texlive-latex-recommended tmux traceroute \
+         lsof \
+         mosh \
+         pandoc pass psmisc \
+         shellcheck socat strace sysstat \
+         tcpdump tmux traceroute \
          whois
-
-command -v snap && sudo apt purge --autoremove snapd
 
 # get my stuff
 [ ! -e ~/.git ] &&
@@ -55,28 +41,11 @@ command -v snap && sudo apt purge --autoremove snapd
          cd ~ &&
          git reset --hard)
 
-# disable power off key
-sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/logind.conf
-
 # get the pet files
-[ -d ~/pet ] || ~/bin/pet unpack
-
-~/bin/drivers.sh
+[ -d ~/pet ] || ~/bin/pet keys
 
 # install utilities
-command -v sway  || ~/bin/install.sh sway
 command -v emacs || ~/bin/install.sh emacs
 command -v erl   || ~/bin/install.sh erlang
-# command -v brave-browser || ~/bin/install.sh brave
-# command -v chromium      || ~/bin/install.sh chromium
-# command -v firefox       || ~/bin/install.sh firefox
 # command -v keybase       || ~/bin/install.sh keybase
-# command -v spotify       || ~/bin/install.sh spotify
-# command -v aws-vault     || ~/bin/install.sh aws-vault
-# command -v aws           || ~/bin/install.sh awscli
-# command -v bazel         || (~/bin/install.sh bazel && ~/bin/install.sh bazelisk)
 # command -v docker        || ~/bin/install.sh docker
-# command -v kubectl       || ~/bin/install.sh kubectl
-# command -v gimp          || ~/bin/install.sh gimp
-# command -v wireshark     || ~/bin/install.sh wireshark
-
