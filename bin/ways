@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-REMOTE="${1:-paranoia}"
-CMD="${2:-emacs}"
-
-waypipe ssh "$USER@$REMOTE" "$CMD"

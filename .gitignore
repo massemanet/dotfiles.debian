@@ -7,11 +7,6 @@ foo*
 
 
 /*.png
-/.CFUserTextEncoding
-/.DS_Store
-/.ICEauthority
-/.IdeaIC*/
-/.Xauthority
 /.aspell.*
 /.aws
 /.awsvault/
@@ -23,12 +18,9 @@ foo*
 /.cask/
 /.config/
 /.docker/
-/.erlang
 /.erlang.cookie
 /.face*
 /.fontconfig/
-/.gkrellm2/
-/.gnome/
 /.gnupg
 /.gradle/
 /.gtkrc-*
@@ -36,7 +28,6 @@ foo*
 /.intellij/
 /.ispell_*
 /.java/
-/.kde/
 /.konan/
 /.krew/
 /.kube
@@ -64,7 +55,11 @@ foo*
 /.uplink/
 /.wget*
 
+/.CFUserTextEncoding
+/.DS_Store
+/.Trash/
 /Desktop/
+/Documents/
 /Downloads/
 /Library/
 /Movies/
