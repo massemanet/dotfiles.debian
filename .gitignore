@@ -5,7 +5,10 @@
 foo*
 *.beam
 
+
 /*.png
+/.CFUserTextEncoding
+/.DS_Store
 /.ICEauthority
 /.IdeaIC*/
 /.Xauthority
@@ -14,13 +17,12 @@ foo*
 /.awsvault/
 /.bash_history
 /.bash_logout
+/.bash_sessions/
 /.cache/
 /.cargo/
 /.cask/
 /.config/
-/.dbus/
 /.docker/
-/.emacs.*/
 /.erlang
 /.erlang.cookie
 /.face*
@@ -42,17 +44,11 @@ foo*
 /.lesshst
 /.lmmsrc.xml
 /.local/
-/.localbashrc
-/.mozilla/
 /.mlterm/
+/.mozilla/
 /.nmcli*
 /.nv/
 /.pam_environment
-/.password-store/
-/.pgAdmin*
-/.pgadmin*
-/.pgadmin3
-/.pgpass
 /.pki/
 /.pulse-cookie
 /.python_history
@@ -66,25 +62,15 @@ foo*
 /.sudo_as_admin_successful
 /.terraform.d/
 /.uplink/
-/.wg2/
 /.wget*
-/.wpa_cli_history
-/.xinputrc
-/.xpra/
-/.xsession-errors
-/_ssh/
-/autosave.h2song
-/bin/bazel
-/bin/docker-credential-*
-/bin/kubectl-*
 
 /Desktop/
 /Downloads/
+/Library/
+/Movies/
+/Music/
 /Pictures/
-/pgadmin.log
-/snap/
-/stale_outputs_checked
-/user_default.erl
+/Public/
 
 /git/
 /pet/
