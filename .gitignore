@@ -21,7 +21,6 @@ foo*
 /.dbus/
 /.docker/
 /.emacs.*/
-/.erlang
 /.erlang.cookie
 /.face*
 /.fontconfig/
@@ -43,8 +42,8 @@ foo*
 /.lmmsrc.xml
 /.local/
 /.localbashrc
-/.mozilla/
 /.mlterm/
+/.mozilla/
 /.nmcli*
 /.nv/
 /.pam_environment
@@ -72,19 +71,17 @@ foo*
 /.xinputrc
 /.xpra/
 /.xsession-errors
+/Desktop/
+/Downloads/
+/Pictures/
 /_ssh/
 /autosave.h2song
 /bin/bazel
 /bin/docker-credential-*
 /bin/kubectl-*
-
-/Desktop/
-/Downloads/
-/Pictures/
 /pgadmin.log
 /snap/
 /stale_outputs_checked
-/user_default.erl
 
 /git/
 /pet/
