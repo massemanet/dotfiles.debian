@@ -131,4 +131,5 @@ case "${1:-swaybar}" in
     temp) _temp;;
     freq) _freq;;
     ssid) _ssid;;
+    bat|battery|power) _bat;;
 esac
