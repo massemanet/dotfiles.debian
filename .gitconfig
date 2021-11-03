@@ -18,6 +18,6 @@
   sync = "! git fetch --prune && git pull --ff-only && for b in $(git branch -vv | grep ': gone]' | awk '{print $1}') ; do git branch -D $b ; done"
   alias = "! git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'"
   pushu = "! git push -u origin $(git branch -a | awk '/\\*/{print $2}')"
-
+  cp = "! ~/bin/git_cp $1 $2 $3"
 [push]
   default = simple
