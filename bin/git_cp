@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+[ -z "${3:-}" ] && exit 7
+FILE=$1; FROM=$2; TO=$3
+C="$(git branch --show-current)"
+git fetch
+if R="$(git branch -a | grep -Eq "/$FROM$" && git branch -a | grep -Eq "/$TO$")"
+then if R=$(git checkout "$TO")
+     then if R=$(git checkout "$FROM" -- "$FILE" && git add "$FILE" && git commit -m "cp $FILE $FROM->$TO" && git push)
+          then echo ok
+          else echo "$R"
+          fi
+          git checkout "$C"
+     else echo "$R"
+     fi
+else echo "$R"
+fi
