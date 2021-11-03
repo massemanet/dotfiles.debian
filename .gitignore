@@ -5,7 +5,7 @@
 foo*
 *.beam
 
-
+/*.h2song
 /*.png
 /.aspell.*
 /.aws
@@ -54,6 +54,8 @@ foo*
 /.terraform.d/
 /.uplink/
 /.wget*
+
+/bin/docker-credential-pass
 
 /.CFUserTextEncoding
 /.DS_Store
