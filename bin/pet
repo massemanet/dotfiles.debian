@@ -17,13 +17,13 @@ _chk() {
 
 _upload() {
     read -r -p "host: " HOST
-    scp -r "$PET" "$HOST:$PET/"
+    scp -r "$PET" "$HOST:"
 }
 
 _download() {
     read -r -p "host: " HOST
     mkdir -p "$PET"
-    scp -r "$HOST:$PET" "$PET"
+    scp -r "$HOST:$PET" "$HOME"
 }
 
 _maxmind() {
