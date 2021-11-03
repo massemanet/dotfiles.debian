@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+git fetch --prune &&
+    git pull --ff-only &&
+    for b in $(git branch -vv | grep ': gone]' | awk '{print $1}')
+    do git branch -D "$b"
+    done

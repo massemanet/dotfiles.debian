@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[ -z "${3:-}" ] && exit 7
+[ -z "${3:-}" ] && echo "missing args" && exit 7
 FILE=$1; FROM=$2; TO=$3
 C="$(git branch --show-current)"
 git fetch
