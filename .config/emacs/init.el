@@ -2,7 +2,7 @@
 ;;; Commentary:
 ;;; an init file.
 ;;; Code:
-;;;  an init file.
+;;; an init file.
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -17,6 +17,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(declare-function straight-use-package "ext:straight")
 
 (straight-use-package 'doom-modeline)
 (straight-use-package '(flycheck :fork "massemanet/flycheck"))
@@ -44,10 +45,8 @@
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
 ;; legacy
-(add-to-list 'load-path "~/.config/emacs/masserlang")
-(add-to-list 'load-path "~/.config/emacs/fdlcap")
-(require 'masserlang)
-(require 'fdlcap)
+(require 'masserlang "/home/masse/.config/emacs/masserlang/masserlang.el")
+(require 'fdlcap "~/.config/emacs/fdlcap/fdlcap.el")
 
 ;; turn on good shit
 (show-paren-mode t)
@@ -72,10 +71,7 @@
 
 (setq-default indent-tabs-mode nil)
 (setq
- display-time-24hr-format    t
- ediff-window-setup-function 'ediff-setup-windows-plain
  inhibit-startup-screen      t
- ring-bell-function          #'blink-mode-line
  visible-bell                nil
  default-input-method        "swedish-postfix"
  max-lisp-eval-depth         40000
@@ -89,6 +85,7 @@ Repeated invocations toggle between the two most recently open buffers."
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (defun prev-window ()
+  "Visit the previous window."
   (interactive)
   (select-window (previous-window (selected-window) nil nil)))
 
@@ -113,6 +110,7 @@ Repeated invocations toggle between the two most recently open buffers."
 (global-set-key (kbd "C-c b")   'bury-buffer)
 (global-set-key (kbd "C-c p")   'point-to-register)
 (global-set-key (kbd "C-c r")   'register-to-point)
+(global-set-key (kbd "C-c C-f") 'erl-find)
 (global-set-key (kbd "C-v")     `scroll-up)
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
 (global-set-key (kbd "C-x O")   'prev-window)
@@ -126,3 +124,6 @@ Repeated invocations toggle between the two most recently open buffers."
 (let ((map minibuffer-local-map))
   (define-key map (kbd "C-n")   'next-history-element)
   (define-key map (kbd "C-p")   'previous-history-element))
+
+(provide 'init)
+;;; init.el ends here

@@ -11,7 +11,7 @@ find "$d" \
      -path "*/.Trash"  -prune -o \
      -path "*/.svn"    -prune -o \
      -path "*-cache"   -prune -o \
-     -path "*/.cache"   -prune -o \
+     -path "*/.cache"  -prune -o \
      -path "*.pem"     -prune -o \
      -path "*/.git"    -prune -o \
      -path "*/.eunit"  -prune -o \

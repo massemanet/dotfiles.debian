@@ -1,4 +1,4 @@
-%%% Created :  7 Apr 2008 by Mats Cronqvist <masse@kreditor.se>
+%%% Created :  7 Apr 2008 by Mats Cronqvist <masse@cronqvi.st>
 
 %% @doc
 %% @end
@@ -25,7 +25,8 @@
 %% recompiles M with export_all without access to the source.
 export_all(M) ->
   case code:which(M) of
-    non_existing -> no_such_module;
+    non_existing ->
+      no_such_module;
     F ->
       {ok,{_,[{abstract_code,{_,AC}}]}} = beam_lib:chunks(F,[abstract_code]),
       {ok,_,B} = compile:forms(AC,[export_all]),

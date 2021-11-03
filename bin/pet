@@ -1,23 +1,42 @@
 #!/usr/bin/env bash
 
+_usage() {
+    $0 upload | download | maxmind
+    exit 0
+}
+
 _err() {
-    echo "$1"
-    exit 1
+    echo "${1:-}"
+    exit 7
+}
+
+_chk() {
+    [ -z "${2:-}" ] && _err "please provide $1"
+    echo "$2"
 }
 
 _upload() {
     read -r -p "host: " HOST
-    scp ~/pet/ssh/* "$HOST:~/pet/ssh/"
+    scp -r "$PET" "$HOST:$PET/"
 }
 
 _download() {
     read -r -p "host: " HOST
-    mkdir -p ~/pet/ssh
-    scp "$HOST:~/pet/ssh/*" ~/pet/ssh
+    mkdir -p "$PET"
+    scp -r "$HOST:$PET" "$PET"
 }
 
-case "$1" in
+_maxmind() {
+    local KEYNAME="$1"
+    eval "export $KEYNAME=$(cat "$PET/maxmind/key")"
+}
+
+PET=$HOME/pet
+
+case "${1:-}" in
     upload)   _upload;;
     download) _download;;
+    maxmind)  _chk "keyname" "$2" && _maxmind "$2";;
+    "")       _usage;;
     *)        _err "unrecognized command: $1";;
 esac
