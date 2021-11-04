@@ -16,10 +16,11 @@
 ;; (setq company-require-match nil)
 ;; (setq company-lighter nil)
 ;; 
-;; (set-variable 'erlang-electric-commands nil)
 ;; (setq safe-local-variable-values
 ;;       (quote ((erlang-indent-level . 4)
 ;;               (erlang-indent-level . 2))))
+
+(set-variable 'erlang-electric-commands nil)
 
 (defun my-erlang-mode-hook ()
   "We want company mode and flycheck."

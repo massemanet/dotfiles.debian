@@ -15,6 +15,7 @@ _chk() {
 }
 
 _upload() {
+    find "$PET" -name "*~" -exec rm {} +
     read -r -p "host: " HOST
     scp -r "$PET" "$HOST:"
 }
