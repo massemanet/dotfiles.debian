@@ -12,7 +12,6 @@ _err() {
 
 _chk() {
     [ -z "${2:-}" ] && _err "please provide $1"
-    echo "$2"
 }
 
 _upload() {
