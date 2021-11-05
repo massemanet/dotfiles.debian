@@ -2,12 +2,12 @@
 
 set -euo pipefail
 
-usage() {
+_usage() {
     echo "$0 TARGET [VSN]"
     err ""
 }
 
-err() {
+_err() {
     echo "$1"
     exit 1
 }
@@ -15,8 +15,9 @@ err() {
 get-aws-vault() {
     local r
     local VSN="${1:-}"
+    local ARCH="$2"
     local DLPAGE="https://github.com/99designs/aws-vault/releases"
-    local RE="download/v[0-9\\.]+/aws-vault-linux-amd64"
+    local RE="download/v[0-9\\.]+/aws-vault-linux-$ARCH"
 
     r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
     [ -z "$r" ] && err "no file at $DLPAGE."
@@ -34,9 +35,9 @@ get-awscli() {
 get-bazel() {
     local VSN="${1:-}"
     local GH="https://github.com/bazelbuild/bazel/releases"
-    local RE="download/[.0-9-]+/bazel-[.0-9-]+-installer-linux-x86_64.sh"
-    local r
+    local RE r
 
+    RE="download/[.0-9-]+/bazel-[.0-9-]+-installer-linux-$(uname -m).sh"
     sudo apt-get update &&
         sudo apt-get install -y --auto-remove \
              unzip
@@ -51,8 +52,9 @@ get-bazel() {
 
 get-bazelisk() {
     local VSN="${1:-}"
+    local ARCH="$2"
     local GH="https://github.com/bazelbuild/bazelisk/releases"
-    local RE="download/v[.0-9-]+/bazelisk-linux-amd64"
+    local RE="download/v[.0-9-]+/bazelisk-linux-$ARCH"
     local r
 
     r="$(curl -sSL "$GH" | grep -Eo "$RE" | grep "$VSN" | sort -Vu | tail -n1)"
@@ -63,9 +65,10 @@ get-bazelisk() {
 }
 
 get-brave(){
+    local ARCH="$2"
     curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc |\
         sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-    echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | \
+    echo "deb [arch=$ARCH] https://brave-browser-apt-release.s3.brave.com/ stable main" | \
         sudo tee /etc/apt/sources.list.d/brave-browser-release.list
     sudo apt update &&
         sudo apt install -y --auto-remove \
@@ -74,12 +77,13 @@ get-brave(){
 }
 
 get-chromium() {
+    local ARCH="$2"
     local v r
     local GH="https://github.com/Eloston/ungoogled-chromium-binaries/releases"
 
     r="$(curl -sSL "$GH")"
     v="$(echo "$r" | grep -Eo "download/[^/]+unportable[^/]+" | sort -u)"
-    r="$(echo "$r" | grep -Eo "$v/ungoogled-chromium.*_amd64.deb" | grep -Ev "driver|dbgsym")"
+    r="$(echo "$r" | grep -Eo "$v/ungoogled-chromium.*_$ARCH.deb" | grep -Ev "driver|dbgsym")"
     for v in $r
     do echo "found file $v"
        curl -sSL "$GH/$v" > /tmp/$$
@@ -100,12 +104,13 @@ get-chromium() {
 }
 
 get-docker() {
+    local ARCH="$2"
     local r s
 
-    B="https://download.docker.com/linux/debian/dists/buster/pool/test/amd64"
+    B="https://download.docker.com/linux/debian/dists/buster/pool/test/$ARCH"
     r="$(curl -sSL "$B")"
     for s in containerd.io docker-ce-cli docker-ce
-    do RE="${s}_[^_]*_amd64.deb"
+    do RE="${s}_[^_]*_$ARCH.deb"
        S="$(echo "$r" | grep -Eo "$RE" | sort -urV | head -n 1)"
        echo "$S"
        curl -sSL "$B/$S" > /tmp/$$
@@ -115,7 +120,7 @@ get-docker() {
     groups | grep docker || sudo adduser "$USER" docker
 
     local GH="https://github.com/docker/docker-credential-helpers/releases"
-    local RE="download/v[0-9\\.]+/docker-credential-pass-v[0-9\\.]+-amd64.tar.gz"
+    local RE="download/v[0-9\\.]+/docker-credential-pass-v[0-9\\.]+-$ARCH.tar.gz"
     r="$(curl -sSL "$GH" | grep -Eo "$RE" | grep "$VSN" | sort -Vu | tail -n1)"
     echo "found file $r"
     curl -sSL "$GH/$r" > /tmp/docker_cred_helper.tgz
@@ -129,11 +134,11 @@ get-docker() {
 }
 
 get-docker-compose() {
-    local r
     local VSN="${1:-}"
     local DLPAGE="https://github.com/docker/compose/releases"
-    local RE="download/[0-9\\.]+/docker-compose-Linux-x86_64"
+    local r RE
 
+    RE="download/[0-9\\.]+/docker-compose-Linux-$(uname -m)"
     r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
     [ -z "$r" ] && err "no file at $DLPAGE."
     echo "found file: $r"
@@ -198,8 +203,9 @@ get-erlang() {
 get-fluxctl() {
     local r
     local VSN="${1:-}"
+    local ARCH="$2"
     local DLPAGE="https://github.com/fluxcd/flux/releases"
-    local RE="download/[0-9\\.]+/fluxctl_linux_amd64"
+    local RE="download/[0-9\\.]+/fluxctl_linux_$ARCH"
 
     r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
     [ -z "$r" ] && err "no file at $DLPAGE."
@@ -209,8 +215,9 @@ get-fluxctl() {
 }
 
 get-go() {
+    local ARCH="$2"
     local DL="golang.org/dl"
-    local RE="go[0-9]+\.[0-9]+\.[0-9]+\.linux-amd64\.tar\.gz"
+    local RE="go[0-9]+\.[0-9]+\.[0-9]+\.linux-$ARCH\.tar\.gz"
     local TGZ
 
     TGZ="$(curl -sSL "$DL" | grep -Eo "$RE" | sort -rV | head -n1)"
@@ -222,8 +229,9 @@ get-go() {
 get-gopass() {
     local r TMP
     local VSN="${1:-}"
+    local ARCH="$2"
     local DLPAGE="https://github.com/gopasspw/gopass/releases"
-    local RE="download/v[0-9\\.]+/gopass-[0-9\\.]+-linux-amd64.tar.gz"
+    local RE="download/v[0-9\\.]+/gopass-[0-9\\.]+-linux-$ARCH.tar.gz"
 
     TMP="$(mktemp)"
     r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
@@ -238,10 +246,9 @@ get-grpcurl() {
     local VSN="${1:-}"
     local ITEM=grpcurl
     local DLPAGE="https://github.com/fullstorydev/$ITEM/releases"
-    local RE="download/v[0-9\\.]+/${ITEM}_[0-9\\.]+_linux_x86_64.tar.gz"
-    local r TMP
+    local r TMP RE
 
-    sudo true
+    RE="download/v[0-9\\.]+/${ITEM}_[0-9\\.]+_linux_$(uname -m).tar.gz"
     r="$(curl -sL "$DLPAGE" | grep -oE "$RE" | grep "$VSN" | sort -uV | tail -n1)"
     [ -z "$r" ] && err "no file at $DLPAGE."
     echo "found file: $r"
@@ -274,16 +281,20 @@ get-intellij() {
 }
 
 get-java() {
+    local ARCH="$2"
+
     sudo apt-get update &&
         sudo apt-get install -y --auto-remove \
              openjdk-8-jdk-headless openjdk-11-jdk-headless openssh-server
-    sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+    sudo update-java-alternatives -s "java-1.8.0-openjdk-$ARCH"
 }
 
 get-keybase() {
-    (cd /tmp && curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb)
+    local ARCH="$2"
+
+    (cd /tmp && curl --remote-name "https://prerelease.keybase.io/keybase_$ARCH.deb")
     sudo apt install -y --auto-remove \
-         /tmp/keybase_amd64.deb
+         "/tmp/keybase_$ARCH.deb"
     sudo apt-get install -f
     run_keybase
 }
@@ -305,17 +316,23 @@ get-kotlin() {
 }
 
 get-krew() {
+    local ARCH="$2"
+    local S
+
+    S="$(uname | tr '[:upper:]' '[:lower:]')"
     cd "$(mktemp -d)" &&
         curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" &&
         tar zxvf krew.tar.gz &&
-        KREW=./krew-"$(uname | tr '[:upper:]' '[:lower:]')_$(uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/')" &&
+        KREW="./krew-$S_$ARCH" &&
         "$KREW" install krew &&
         ln -s ~/.krew/bin/kubectl-krew ~/bin
 }
 
 get-ksniff() {
-    command -v kubectl || get-kubectl
-    kubectl krew > /dev/null || get-krew
+    local ARCH="$2"
+
+    command -v kubectl || get-kubectl "" "$ARCH"
+    kubectl krew > /dev/null || get-krew "" "$ARCH"
     kubectl krew install sniff &&
         ln -s ~/.krew/bin/kubectl-sniff ~/bin
 }
@@ -414,9 +431,19 @@ get-wireshark() {
     sudo usermod -aG wireshark "$USER"
 }
 
+_arch() {
+    local ARCH
+    ARCH="$(uname -m)"
+    case "$ARCH" in
+        i686) echo i386;;
+        x86_64) echo amd64;;
+        *) _err "unkown arch: $ARCH";;
+    esac
+}
+
 sudo true
-[ -z "$1" ] && usage
+[ -z "$1" ] && _usage
 TRG="$1"
 VSN="${2:-}"
 echo "## $TRG:$VSN ##################################################################"
-"get-$TRG" "$VSN"
+"get-$TRG" "$VSN" "$(_arch)"

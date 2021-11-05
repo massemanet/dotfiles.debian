@@ -35,22 +35,27 @@ HERE
 
 # use systemd for networking
 sudo apt purge ifupdown
-sudo tee /etc/systemd/network/en.network <<HERE
+EN=/etc/systemd/network/en.network
+if [ ! -f "$EN" ]
+then sudo tee $EN <<HERE
 [Match]
 Name=en*
 [Network]
 DHCP=yes
 HERE
-sudo tee /etc/systemd/network/wl.network <<HERE
+fi
+WL=/etc/systemd/network/wl.network
+if [ ! -f "$WL" ]
+then sudo tee $WL <<HERE
 [Match]
 Name=wl*
 [Network]
 DHCP=yes
 HERE
 
-sudo ln -sf \
-     /lib/systemd/system/wpa_supplicant@.service \
-     "/etc/systemd/system/multi-user.target.wants/wpa_supplicant@$(iw dev | grep Interface  | cut -f2 -d" ").service"
+IWI="$(iw dev | grep Interface  | cut -f2 -d" ")"
+IWUNIT="/etc/systemd/system/multi-user.target.wants/wpa_supplicant@${IWI}.service"
+[ -f "$IWUNIT" ] || sudo ln -sf /lib/systemd/system/wpa_supplicant@.service "$IWUNIT"     
 
 sudo systemctl enable systemd-networkd
 sudo systemctl restart systemd-networkd
