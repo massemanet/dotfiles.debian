@@ -17,15 +17,25 @@ shopt -s checkwinsize
 # pretty colors
 export LSCOLORS=ExFxCxDxBxEgEdAbAgAcAd
 
-# completion
-. /usr/local/share/bash-completion/bash_completion.sh
+# tab completions
+COMPLETIONS="$(cat <<HERE
+$HOME/gnu/share/bash-completion/bash_completion 
+/usr/local/share/git-core/contrib/completion/git-completion.bash 
+/usr/local/share/bash-completion/bash_completion.sh 
+/usr/local/etc/bash_completion.d/*
+HERE
+)"
+
+for s in $COMPLETIONS
+do [ -f "$s" ] && source "$s"
+done
 
 # define some git helpers
 # shellcheck source=bin/gitfunctions
 [ -f ~/bin/gitfunctions ] && . ~/bin/gitfunctions
 
 # emacs
-export EDITOR=nano
+export EDITOR="emacsclient -c"
 
 # PS1
 export GIT_PS1_SHOWSTASHSTATE=true

@@ -5,8 +5,8 @@
 foo*
 *.beam
 
-/*cronqvi.st/
 /*.png
+/*cronqvi.st/
 /.ICEauthority
 /.IdeaIC*/
 /.Xauthority
@@ -44,8 +44,8 @@ foo*
 /.lmmsrc.xml
 /.local/
 /.localbashrc
-/.mozilla/
 /.mlterm/
+/.mozilla/
 /.nmcli*
 /.nv/
 /.pam_environment
@@ -78,6 +78,7 @@ foo*
 /bin/bazel
 /bin/docker-credential-*
 /bin/kubectl-*
+/gnu/
 
 /Desktop/
 /Downloads/
