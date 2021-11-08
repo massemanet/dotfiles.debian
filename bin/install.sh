@@ -30,12 +30,15 @@ _tarball() {
 
     mkdir -p ~/tmp
     cd ~/tmp
-    [ ! -f "$NAME" ] &&
-        curl -sL "$URL" -o "$NAME" &&
-        tar -xf "$NAME"
-    cd "$(ls -1 | grep -E "$NAME[_-]")"
-    ./configure --prefix="$HOME/gnu" "$CONFIG"
-    make install
+    [ ! -f "$NAME" ] && curl -sL "$URL" -o "$NAME"
+    if [[ "$(file "$NAME")" =~ "compressed data" ]]
+    then tar -xf "$NAME"
+         cd "$(ls -1 | grep -E "$NAME[_-]")"
+         ./configure --prefix="$HOME/gnu" "$CONFIG"
+         make install
+    else chmod +x "$NAME"
+         cp "$NAME" ~/gnu/bin
+    fi
 }
 
 _gnu() {
@@ -107,9 +110,11 @@ get-bash_completion() {
     _github scop bash-completion
 }
 
+
 get-rebar() {
     local VSN="${1:-}"
-    _github erlang rebar3 "$VSN"
+    _github erlang rebar3 "$VSN" "" "download/[0-9\.]+/rebar3"
+
 }
 
 get-tree() {
