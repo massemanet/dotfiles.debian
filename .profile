@@ -1,4 +1,12 @@
-[ -d "$HOME/bin" ] && PATH=$HOME/bin:$PATH
+__path() {
+    [ -d "$1" ] && PATH="$1:$PATH"
+}
+__path "$HOME/bin"
+__path "$HOME/gnu/bin"
+
+for f in $HOME/gnu/etc/profile.d/*
+do source "$f"
+done
 
 # one locale to rule them all
 unset  LC_ALL

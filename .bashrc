@@ -2,7 +2,7 @@
 # -*- mode: shell-script -*-
 # ~/.bashrc: executed by bash(1) for non-login shells.
 #
-# debian style
+# bsd style
 
 # make scp work by checking for a tty
 [ -t 0 ] || return
@@ -15,9 +15,10 @@ unalias -a
 shopt -s checkwinsize
 
 # pretty colors
-# eval "$(dircolors)"
+export LSCOLORS=ExFxCxDxBxEgEdAbAgAcAd
 
-# . /usr/local/share/bash_completion
+# completion
+. /usr/local/share/bash-completion/bash_completion.sh
 
 # define some git helpers
 # shellcheck source=bin/gitfunctions
